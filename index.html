@@ -4,11 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./bootstrap-5.3.3-dist/css/bootstrap.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="192x192" href="/strainfinder_fav.png">
     <title>Strain finder</title>
 </head>
 
 <body>
+    <div class="container container-fluid">
+        <h1>Strain finder</h1>
+        <div class="search-container input-group">
+            <input type="text" id="search" placeholder="Enter the strain name">
+            <button id="search-btn" class="btn btn-primary">Search</button>
+        </div>
+        <div class="result-container">
+            <div id="result"></div>
+        </div>
+    </div>
 
 </body>
 
