@@ -33,7 +33,8 @@ searchInput.addEventListener('input', (event) => {
         card.classList.add('card');
 
         const image = document.createElement('img');
-        image.src = strain.img_url ? strain.img_url : './assets/strainfinder_400.jpeg';
+        const randomNum = Math.floor(Math.random() * 20) + 1;
+        image.src = strain.img_url ? strain.img_url : `./assets/strain-${randomNum}.png`;
         image.width = 250;
         card.appendChild(image);
 
@@ -46,7 +47,7 @@ searchInput.addEventListener('input', (event) => {
         card.appendChild(type);
 
         const thcContent = document.createElement('p');
-        thcContent.textContent = `THC: ${strain.thc_level}`;
+        thcContent.textContent = strain.thc_level ? `THC: ${strain.thc_level}` : 'THC: N/A';
         card.appendChild(thcContent);
 
         const description = document.createElement('p');
