@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Pathway+Gothic+One&display=swap');
-
 * {
     margin: 0;
     padding: 0;
@@ -8,12 +7,10 @@
     font-weight: 400;
     font-style: normal; 
 }
-
 :root {
     --beige: #fbfdef;
     --green: #3a5251;
 }
-
 header {
     position: fixed;
     top: 0;
@@ -27,13 +24,12 @@ header {
     z-index: 1;
     background-color: var(--beige);        
 }
-
 header h1 {
+    display: none;
     position: relative;
     bottom: 2px;
     color: var(--green);
 }
-
 .container {
     display: flex;
     justify-content: center;
@@ -42,7 +38,6 @@ header h1 {
     padding: 1rem;
     min-height: calc(100vh - 60px);
 }
-
 .search-container {
     position: relative;
     z-index: 1;
@@ -50,14 +45,12 @@ header h1 {
     display: flex;
     align-items: center;
 }
-
 .search-container input[type="text"] {
     flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px 0 0 5px;
 }
-
 .search-container button {
     padding: 10px;
     border: 1px solid #ccc;
@@ -65,7 +58,6 @@ header h1 {
     background-color: #f8f9fa;
     color: #333;
 }
-
 .result-container {
     display: grid;
     width: 100%;
@@ -77,13 +69,11 @@ header h1 {
 }
 
 /* overwrite bootstrap card style */
-
 .card-subtitle {
     display: flex;
     justify-content: space-between;
     padding: 0 0 0.5rem;
 }
-
 .hidden {
     opacity: 0;
     filter: blur(5px);
@@ -91,7 +81,6 @@ header h1 {
     transition: all 1s;
     pointer-events: none;
 }
-
 .show {
     animation-delay: 200ms;
     opacity: 1;
@@ -99,7 +88,6 @@ header h1 {
     pointer-events: visible;
     /* transform: translateX(0); */
 }
-
 .description {
     display: -webkit-box;
     overflow: hidden;
@@ -107,12 +95,11 @@ header h1 {
     -webkit-line-clamp: 3;
     white-space: pre-wrap;
 }
-
 footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6rem;
+    gap: 3rem;
     width: 100%;
     height: 60px;
     position: relative;
@@ -120,21 +107,41 @@ footer {
     color: var(--beige);
     background-color: var(--green);
 }
-
 footer a {
     text-decoration: none;
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: var(--beige);
 }
-
-@media (min-width: 768px) {
-    .search-container {
-        max-width: 90%;
+@media (min-width: 480px) {
+    header h1 {
+        display: block;
+        font-size: 1.5rem;
+        top: 8px
     }
 }
-
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
+    header h1 {
+        font-size: 2rem;
+        top: 4px;
+    }
     .search-container {
         max-width: 50%;
+    }
+    footer {
+        gap: 6rem;
+    }
+    footer a {
+        font-size: 1.25rem;
+    }
+}
+@media (min-width: 1024px) {
+    .search-container {
+        max-width: 420px;
+    }
+    footer {
+        gap: 8rem;
+    }
+    footer a {
+        font-size: 1.5rem;
     }
 }
