@@ -43,30 +43,42 @@
 .result-container {
     display: grid;
     width: 100%;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
     position: relative;
     z-index: 0;
 }
 
-.card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 1rem;
+/* overwrite bootstrap card style */
+
+.card-subtitle {
+    display: flex;
+    justify-content: space-between;
 }
 
-.card img {
-    max-width: 100%;
-    height: auto;
+.hidden {
+    opacity: 0;
+    filter: blur(5px);
+    /* transform: translateX(-100%); */
+    transition: all 1s;
+    pointer-events: none;
+}
+
+.show {
+    animation-delay: 250ms;
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: visible;
+    /* transform: translateX(0); */
 }
 
 .description {
-    display: block;
-    max-width: 100%;
-    white-space: nowrap;
+    display: -webkit-box;
     overflow: hidden;
-    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    white-space: pre-wrap;
 }
 
 @media (max-width: 768px) {

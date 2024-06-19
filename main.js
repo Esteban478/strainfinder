@@ -10,51 +10,94 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const searchInput = document.querySelector('#search');
+let timeoutId;
 
-searchInput.addEventListener('input', (event) => {
-    const searchText = event.target.value.toLowerCase();
-    if (searchText === '') {
-        // Clear previous results
-        const resultContainer = document.querySelector('.result-container');
-        resultContainer.innerHTML = '';
-        return;
-    }
-    const filteredData = strainData.filter(strain => {
+// Debounce function
+const debounce = (func, delay) => {
+    return (...args) => {
+        if (timeoutId) clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            func.apply(this, args);
+        }, delay);
+    };
+};
+
+const filterData = (searchText, strainData) => {
+    if (!searchText) return null;
+    return strainData.filter(strain => {
         // return (strain.name && typeof strain.name === 'string' && strain.name.toLowerCase().includes(searchText)) ||
         //     (strain.description && typeof strain.description === 'string' && strain.description.toLowerCase().includes(searchText));
         return (strain.name && typeof strain.name === 'string' && strain.name.toLowerCase().includes(searchText));
     });
+}
 
-    const resultContainer = document.querySelector('.result-container');
-    resultContainer.innerHTML = ''; // Clear previous results
+const createCard = (strain) => {
+    const card = document.createElement('div');
+    card.classList.add('card', 'hidden');
+    const name = document.createElement('h4');
+    name.classList.add('card-header');
+    name.textContent = strain.name;
+    card.appendChild(name);
 
-    filteredData.forEach(strain => {
-        const card = document.createElement('div');
-        card.classList.add('card');
+    const image = document.createElement('img');
+    image.classList.add('card-img-top');
+    const randomNum = Math.floor(Math.random() * 20) + 1;
+    image.src = strain.img_url ? strain.img_url : `./assets/strain-${randomNum}.png`;
+    image.width = 240;
+    card.appendChild(image);
 
-        const image = document.createElement('img');
-        const randomNum = Math.floor(Math.random() * 20) + 1;
-        image.src = strain.img_url ? strain.img_url : `./assets/strain-${randomNum}.png`;
-        image.width = 250;
-        card.appendChild(image);
+    const cardContent = document.createElement('div');
+    cardContent.classList.add('card-body');
+    card.appendChild(cardContent);
 
-        const name = document.createElement('h3');
-        name.textContent = strain.name;
-        card.appendChild(name);
+    const subTitle = document.createElement('h5');
+    subTitle.classList.add('card-subtitle');
+    cardContent.appendChild(subTitle);
 
-        const type = document.createElement('p');
-        type.textContent = `Type: ${strain.type}`;
-        card.appendChild(type);
+    const thcContent = document.createElement('span');
+    thcContent.textContent = strain.thc_level ? `THC: ${strain.thc_level}` : 'THC: N/A';
+    subTitle.appendChild(thcContent);
 
-        const thcContent = document.createElement('p');
-        thcContent.textContent = strain.thc_level ? `THC: ${strain.thc_level}` : 'THC: N/A';
-        card.appendChild(thcContent);
+    const type = document.createElement('span');
+    type.textContent = `Type: ${strain.type}`;
+    subTitle.appendChild(type);
 
-        const description = document.createElement('p');
-        description.classList.add('description');
-        description.textContent = strain.description;
-        card.appendChild(description);
+    const description = document.createElement('p');
+    description.classList.add('card-text', 'description');
+    description.textContent = strain.description;
+    cardContent.appendChild(description);
+    return card;
+}
 
-        resultContainer.appendChild(card);
-    });
+searchInput.addEventListener('input', (event) => {
+    debounce(() => {
+        let searchText = event.target.value.toLowerCase();
+        let resultContainer = document.querySelector('.result-container');
+        resultContainer.innerHTML = '';
+        console.log('debouncing...' + searchText);
+
+        if (searchText === '') {
+            // Clear previous results
+            resultContainer = document.querySelector('.result-container');
+            resultContainer.innerHTML = '';
+            return;
+        }
+        let filteredData = filterData(searchText, strainData);
+        console.log(filteredData)
+        filteredData.forEach(strain => {
+            let card = createCard(strain);
+            resultContainer.appendChild(card);
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show')
+                } else {
+                    entry.target.classList.remove('show')
+                }
+            })
+        })
+        const hiddenElements = document.querySelectorAll('.hidden');
+        hiddenElements.forEach((el) => observer.observe(el))
+    }, 300)();
 });
