@@ -34,7 +34,7 @@ const filterData = (searchText, strainData) => {
 const createCard = (strain) => {
     const card = document.createElement('div');
     card.classList.add('card', 'hidden');
-    const name = document.createElement('h4');
+    const name = document.createElement('h5');
     name.classList.add('card-header');
     name.textContent = strain.name;
     card.appendChild(name);
@@ -74,7 +74,6 @@ searchInput.addEventListener('input', (event) => {
         let searchText = event.target.value.toLowerCase();
         let resultContainer = document.querySelector('.result-container');
         resultContainer.innerHTML = '';
-        console.log('debouncing...' + searchText);
 
         if (searchText === '') {
             // Clear previous results
@@ -83,7 +82,6 @@ searchInput.addEventListener('input', (event) => {
             return;
         }
         let filteredData = filterData(searchText, strainData);
-        console.log(filteredData)
         filteredData.forEach(strain => {
             let card = createCard(strain);
             resultContainer.appendChild(card);
@@ -99,5 +97,5 @@ searchInput.addEventListener('input', (event) => {
         })
         const hiddenElements = document.querySelectorAll('.hidden');
         hiddenElements.forEach((el) => observer.observe(el))
-    }, 300)();
+    }, 250)();
 });

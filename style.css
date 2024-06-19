@@ -14,12 +14,12 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding: 1rem;
 }
 
 .search-container {
     position: relative;
     z-index: 1;
-    max-width: 80%;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -55,6 +55,7 @@
 .card-subtitle {
     display: flex;
     justify-content: space-between;
+    padding: 0 0 0.5rem
 }
 
 .hidden {
@@ -66,7 +67,7 @@
 }
 
 .show {
-    animation-delay: 250ms;
+    animation-delay: 200ms;
     opacity: 1;
     filter: blur(0);
     pointer-events: visible;
@@ -90,5 +91,17 @@
 @media (max-width: 480px) {
     .result-container {
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}
+
+@media (min-width: 768px) {
+    .search-container {
+        max-width: 90%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .search-container {
+        max-width: 50%;
     }
 }
