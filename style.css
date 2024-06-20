@@ -69,14 +69,14 @@ header h1 {
 .introduction-text,
 .no-results-text {
     position: absolute;
-    top: 45vh;
+    top: 40vh;
 }
 .result-container {
     display: grid;
     width: 100%;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1.5rem;
-    padding-top: 60px;
+    padding: 60px 0;
     position: relative;
     z-index: 0;
     text-align: left;
