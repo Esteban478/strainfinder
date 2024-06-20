@@ -12,6 +12,7 @@
     --green: #3a5251;
 }
 body {
+    height: 100%;
     position: relative;
 }
 header {
