@@ -29,6 +29,7 @@ header {
 }
 header img {
     height: auto;
+    max-width: 100%;
 }
 header h1 {
     display: none;
@@ -64,6 +65,10 @@ header h1 {
     border-radius: 0 5px 5px 0;
     background-color: #f8f9fa;
     color: #333;
+}
+.introduction-text {
+    position: absolute;
+    top: 45vh;
 }
 .result-container {
     display: grid;
