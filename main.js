@@ -1,6 +1,10 @@
-let strainData = [];
 const introductionText = document.querySelector('.introduction-text');
 const noResultsText = document.querySelector('.no-results-text');
+const demoLink = document.querySelector('#demo-link');
+const demoText = 'frost';
+let resultContainer = document.querySelector('.result-container');
+let strainData = [];
+let demoIndex = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
     fetch('https://strainsapi.netlify.app/strains.json')
@@ -28,7 +32,8 @@ const filterData = (searchText, strainData) => {
     if (!searchText) return null;
     return strainData.filter(strain => {
         return (strain.name && typeof strain.name === 'string' && strain.name.toLowerCase().includes(searchText)) ||
-            (strain.thc_level && typeof strain.thc_level === 'string' && strain.thc_level.toLowerCase().includes(searchText));
+            (strain.thc_level && typeof strain.thc_level === 'string' && strain.thc_level.toLowerCase().includes(searchText)) ||
+            (strain.type && typeof strain.type === 'string' && strain.type.toLowerCase().includes(searchText));
     });
 }
 
@@ -70,10 +75,23 @@ const createCard = (strain) => {
     return card;
 }
 
+const startObserving = () => {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show')
+            } else {
+                entry.target.classList.remove('show')
+            }
+        })
+    })
+    const hiddenElements = resultContainer.querySelectorAll('.hidden');
+    hiddenElements.forEach((el) => observer.observe(el))
+}
+
 searchInput.addEventListener('input', (event) => {
     debounce(() => {
         let searchText = event.target.value.toLowerCase();
-        let resultContainer = document.querySelector('.result-container');
         introductionText.classList.remove('show');
         noResultsText.classList.remove('show');
         resultContainer.innerHTML = '';
@@ -97,16 +115,39 @@ searchInput.addEventListener('input', (event) => {
             const card = createCard(strain);
             resultContainer.appendChild(card);
         });
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show')
-                } else {
-                    entry.target.classList.remove('show')
-                }
-            })
-        })
-        const hiddenElements = resultContainer.querySelectorAll('.hidden');
-        hiddenElements.forEach((el) => observer.observe(el))
-    }, 250)();
+        startObserving();
+    }, 350)();
 });
+
+const startDemoMode = () => {
+    // Highlight the input field and change the placeholder text
+    searchInput.classList.add('demo-mode');
+    searchInput.placeholder = 'DEMO MODE: Search for strains...';
+    searchInput.value = '';
+
+    // Simulate typing
+    demoIndex = 0;
+    const typeNextLetter = () => {
+        if (demoIndex < demoText.length) {
+            searchInput.value += demoText[demoIndex];
+            demoIndex++;
+            setTimeout(typeNextLetter, 500);
+        } else {
+            // Demo complete, reset styles after a delay
+            setTimeout(() => {
+                searchInput.classList.remove('demo-mode');
+                searchInput.placeholder = 'Search for strains...';
+                let filteredData = filterData(searchInput.value, strainData);
+                filteredData.forEach(strain => {
+                    const card = createCard(strain);
+                    resultContainer.appendChild(card);
+                });
+                introductionText.classList.remove('show');
+                startObserving();
+            }, 750);
+        }
+    };
+    debounce(() => {
+        typeNextLetter();
+    }, 1000)();
+};
