@@ -24,6 +24,9 @@ header {
     z-index: 1;
     background-color: var(--beige);        
 }
+header img {
+    height: auto;
+}
 header h1 {
     display: none;
     position: relative;
@@ -31,6 +34,7 @@ header h1 {
     color: var(--green);
 }
 .container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -67,6 +71,7 @@ header h1 {
     padding-top: 60px;
     position: relative;
     z-index: 0;
+    text-align: left;
 }
 
 /* overwrite bootstrap card style */
@@ -97,6 +102,8 @@ header h1 {
     white-space: pre-wrap;
 }
 footer {
+    position: absolute;
+    bottom: 0;
     display: flex;
     justify-content: center;
     align-items: center;
