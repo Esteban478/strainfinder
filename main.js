@@ -1,5 +1,6 @@
 let strainData = [];
 const introductionText = document.querySelector('.introduction-text');
+const noResultsText = document.querySelector('.no-results-text');
 
 document.addEventListener('DOMContentLoaded', () => {
     fetch('https://strainsapi.netlify.app/strains.json')
@@ -73,17 +74,25 @@ searchInput.addEventListener('input', (event) => {
     debounce(() => {
         let searchText = event.target.value.toLowerCase();
         let resultContainer = document.querySelector('.result-container');
+        introductionText.classList.remove('show');
+        noResultsText.classList.remove('show');
         resultContainer.innerHTML = '';
-        introductionText.style.display = 'none';
 
         if (searchText === '') {
             // Clear previous results
-            resultContainer = document.querySelector('.result-container');
             resultContainer.innerHTML = '';
-            introductionText.style.display = 'block';
+            introductionText.classList.add('show');
+            noResultsText.classList.remove('show');
             return;
         }
         let filteredData = filterData(searchText, strainData);
+
+        if (searchText !== '' && !filteredData || filteredData.length === 0) {
+            resultContainer.innerHTML = '';
+            noResultsText.classList.add('show');
+            noResultsText.innerHTML = `<h4>No results found for "${searchText}"</h4>`;
+            return;
+        }
         filteredData.forEach(strain => {
             const card = createCard(strain);
             resultContainer.appendChild(card);
@@ -97,7 +106,7 @@ searchInput.addEventListener('input', (event) => {
                 }
             })
         })
-        const hiddenElements = document.querySelectorAll('.hidden');
+        const hiddenElements = resultContainer.querySelectorAll('.hidden');
         hiddenElements.forEach((el) => observer.observe(el))
     }, 250)();
 });
