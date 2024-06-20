@@ -11,6 +11,9 @@
     --beige: #fbfdef;
     --green: #3a5251;
 }
+body {
+    position: relative;
+}
 header {
     position: fixed;
     top: 0;
@@ -20,7 +23,7 @@ header {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0.5rem 1rem;
     z-index: 1;
     background-color: var(--beige);        
 }
@@ -34,13 +37,12 @@ header h1 {
     color: var(--green);
 }
 .container {
-    position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     padding: 1rem;
-    min-height: calc(100vh - 60px);
+    min-height: 100vh;
     text-align: center;
 }
 .search-container {
