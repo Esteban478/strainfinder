@@ -29,7 +29,7 @@ header {
 }
 header img {
     height: auto;
-    max-width: 100%;
+    max-width: 44px;
 }
 header h1 {
     display: none;
