@@ -1,14 +1,15 @@
 let strainData = [];
+const introductionText = document.querySelector('.introduction-text');
 
 document.addEventListener('DOMContentLoaded', () => {
     fetch('https://strainsapi.netlify.app/strains.json')
         .then(response => response.json())
         .then(data => {
             strainData = data;
+            introductionText.classList.add('show');
         })
         .catch(error => console.error('Error fetching data:', error));
 });
-
 const searchInput = document.querySelector('#search');
 let timeoutId;
 
@@ -25,9 +26,8 @@ const debounce = (func, delay) => {
 const filterData = (searchText, strainData) => {
     if (!searchText) return null;
     return strainData.filter(strain => {
-        // return (strain.name && typeof strain.name === 'string' && strain.name.toLowerCase().includes(searchText)) ||
-        //     (strain.description && typeof strain.description === 'string' && strain.description.toLowerCase().includes(searchText));
-        return (strain.name && typeof strain.name === 'string' && strain.name.toLowerCase().includes(searchText));
+        return (strain.name && typeof strain.name === 'string' && strain.name.toLowerCase().includes(searchText)) ||
+            (strain.thc_level && typeof strain.thc_level === 'string' && strain.thc_level.toLowerCase().includes(searchText));
     });
 }
 
@@ -74,16 +74,18 @@ searchInput.addEventListener('input', (event) => {
         let searchText = event.target.value.toLowerCase();
         let resultContainer = document.querySelector('.result-container');
         resultContainer.innerHTML = '';
+        introductionText.style.display = 'none';
 
         if (searchText === '') {
             // Clear previous results
             resultContainer = document.querySelector('.result-container');
             resultContainer.innerHTML = '';
+            introductionText.style.display = 'block';
             return;
         }
         let filteredData = filterData(searchText, strainData);
         filteredData.forEach(strain => {
-            let card = createCard(strain);
+            const card = createCard(strain);
             resultContainer.appendChild(card);
         });
         const observer = new IntersectionObserver((entries) => {
