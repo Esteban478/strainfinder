@@ -80,7 +80,7 @@ const createCard = (strain) => {
     image.classList.add('card-img-top', 'lazy-load');
     // add data-src attribute to image
     const randomNum = Math.floor(Math.random() * 20) + 1;
-    image.dataset.src = strain.img_url ? strain.img_url : `./assets/strain-${randomNum}.png`;
+    image.dataset.src = strain.img_url ? strain.img_url : `./assets/strain-${randomNum}.jpg`;
     image.src = './assets/strainfinder_400.jpeg';
     image.width = 240;
     cardContainer.appendChild(image);
@@ -167,34 +167,52 @@ searchInput.addEventListener('input', (event) => {
 });
 
 const startDemoMode = () => {
-    // Highlight the input field and change the placeholder text
-    searchInput.classList.add('demo-mode');
-    searchInput.placeholder = 'DEMO MODE: Search for strains...';
-    searchInput.value = '';
+    // Show the overlay after short delay
+    setTimeout(() => {
+        const overlay = document.getElementById('overlay');
+        overlay.style.display = 'flex';
+    }, 400);
 
-    // Simulate typing
-    demoIndex = 0;
-    const typeNextLetter = () => {
-        if (demoIndex < demoText.length) {
-            searchInput.value += demoText[demoIndex];
-            demoIndex++;
-            debounce(typeNextLetter, 500)();
-        } else {
-            // Demo complete, reset styles after a delay
-            debounce(() => {
-                searchInput.classList.remove('demo-mode');
-                searchInput.placeholder = 'Enter a cannabis strain you are curious about';
-                let filteredData = filterData(searchInput.value, strainData);
-                filteredData.forEach(strain => {
-                    const card = createCard(strain);
-                    resultContainer.appendChild(card);
-                });
-                introductionText.classList.remove('show');
-                startObserving();
-            }, 750)();
-        }
-    };
-    debounce(() => {
-        typeNextLetter();
-    }, 1000)();
+    // Highlight the input field and change the placeholder text
+    setTimeout(() => {
+        searchInput.classList.add('demo-mode');
+        searchInput.placeholder = 'DEMO MODE. Start searching...';
+        searchInput.value = '';
+    }, 800);
+
+    setTimeout(() => {
+        // Simulate typing
+        demoIndex = 0;
+        const typeNextLetter = () => {
+            if (demoIndex < demoText.length) {
+                searchInput.value += demoText[demoIndex];
+                demoIndex++;
+                debounce(typeNextLetter, 500)();
+            } else {
+                // Demo complete, reset styles after a delay
+                debounce(() => {
+                    searchInput.classList.remove('demo-mode');
+                    searchInput.placeholder = 'Enter a cannabis strain you are curious about';
+                    const demoButton = document.getElementById('start-demo');
+                    demoButton.style.display = 'block';
+                    let filteredData = filterData(searchInput.value, strainData);
+                    filteredData.forEach(strain => {
+                        const card = createCard(strain);
+                        resultContainer.appendChild(card);
+                    });
+                    introductionText.classList.remove('show');
+                    startObserving();
+                    storeSearchText(demoText);
+                }, 750)();
+            }
+        };
+        debounce(() => {
+            typeNextLetter();
+        }, 1000)();
+    }, 1600)
+
+    // Hide the overlay after a delay
+    setTimeout(() => {
+        overlay.style.display = 'none';
+    }, 6660);
 };
