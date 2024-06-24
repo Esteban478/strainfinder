@@ -78,13 +78,17 @@ header h1 {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
     display: none;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     color: white;
     font-size: 1.5rem;
+    padding: 10rem 0;
     margin: 60px 0 0;
     transition: opacity 0.5s ease-in-out;
 }
+.blur {
+    filter: blur(3px);
+} 
 #search.demo-mode {
     border: 1px solid var(--warn);
     box-shadow: 0 0 8px var(--warn);

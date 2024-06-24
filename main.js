@@ -167,10 +167,13 @@ searchInput.addEventListener('input', (event) => {
 });
 
 const startDemoMode = () => {
+    const container = document.querySelector('.container');
+
     // Show the overlay after short delay
     setTimeout(() => {
         const overlay = document.getElementById('overlay');
         overlay.style.display = 'flex';
+        container.classList.add('blur');
     }, 400);
 
     // Highlight the input field and change the placeholder text
@@ -178,7 +181,7 @@ const startDemoMode = () => {
         searchInput.classList.add('demo-mode');
         searchInput.placeholder = 'DEMO MODE. Start searching...';
         searchInput.value = '';
-    }, 800);
+    }, 900);
 
     setTimeout(() => {
         // Simulate typing
@@ -200,6 +203,7 @@ const startDemoMode = () => {
                         const card = createCard(strain);
                         resultContainer.appendChild(card);
                     });
+                    container.classList.remove('blur');
                     introductionText.classList.remove('show');
                     startObserving();
                     storeSearchText(demoText);
