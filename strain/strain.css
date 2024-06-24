@@ -1,0 +1,10 @@
+* {
+    text-align: left;
+}
+.img-container {
+    text-align: center;
+}
+
+#strain-img {
+    max-width: 420px;
+}

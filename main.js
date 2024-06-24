@@ -11,7 +11,20 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             strainData = data;
-            introductionText.classList.add('show');
+            if (getSearchText()) {
+                const searchText = getSearchText();
+                console.log(searchText);
+                searchInput.value = searchText;
+                let filteredData = filterData(searchText, strainData);
+                console.log(filteredData);
+                filteredData.forEach(strain => {
+                    const card = createCard(strain);
+                    resultContainer.appendChild(card);
+                });
+                startObserving();
+            } else {
+                introductionText.classList.add('show');
+            }
         })
         .catch(error => console.error('Error fetching data:', error));
 });
@@ -28,6 +41,19 @@ const debounce = (func, delay) => {
     };
 };
 
+// session storage functions
+const storeSearchText = (searchText) => {
+    sessionStorage.setItem('searchText', searchText);
+}
+
+const getSearchText = () => {
+    return sessionStorage.getItem('searchText');
+}
+
+const clearSearchText = () => {
+    sessionStorage.removeItem('searchText');
+}
+
 const filterData = (searchText, strainData) => {
     if (!searchText) return null;
     return strainData.filter(strain => {
@@ -38,23 +64,30 @@ const filterData = (searchText, strainData) => {
 }
 
 const createCard = (strain) => {
-    const card = document.createElement('div');
-    card.classList.add('card', 'hidden');
+    // wrap the whole card inside a link to the strain page which is /strain + strain name as url parameter
+    const card = document.createElement('a');
+    card.href = `./strain/strain.html?name=${encodeURIComponent(strain.name)}`;
+
+    // create the card
+    const cardContainer = document.createElement('div');
+    cardContainer.classList.add('card', 'hidden');
     const name = document.createElement('h5');
     name.classList.add('card-header');
     name.textContent = strain.name;
-    card.appendChild(name);
+    cardContainer.appendChild(name);
 
     const image = document.createElement('img');
-    image.classList.add('card-img-top');
+    image.classList.add('card-img-top', 'lazy-load');
+    // add data-src attribute to image
     const randomNum = Math.floor(Math.random() * 20) + 1;
-    image.src = strain.img_url ? strain.img_url : `./assets/strain-${randomNum}.png`;
+    image.dataset.src = strain.img_url ? strain.img_url : `./assets/strain-${randomNum}.png`;
+    image.src = './assets/strainfinder_400.jpeg';
     image.width = 240;
-    card.appendChild(image);
+    cardContainer.appendChild(image);
 
     const cardContent = document.createElement('div');
     cardContent.classList.add('card-body');
-    card.appendChild(cardContent);
+    cardContainer.appendChild(cardContent);
 
     const subTitle = document.createElement('h5');
     subTitle.classList.add('card-subtitle');
@@ -72,6 +105,7 @@ const createCard = (strain) => {
     description.classList.add('card-text', 'description');
     description.textContent = strain.description;
     cardContent.appendChild(description);
+    card.appendChild(cardContainer);
     return card;
 }
 
@@ -79,9 +113,19 @@ const startObserving = () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('show')
+                // Lazy load the image
+                const img = entry.target.querySelector('.lazy-load');
+                if (img) {
+                    img.src = img.getAttribute('data-src');
+                    img.onload = () => {
+                        img.classList.add('loaded'); // Optional: Add a class when the image is loaded
+                    };
+                    img.removeAttribute('data-src');
+                }
+                entry.target.classList.add('show');
+                observer.unobserve(entry.target);
             } else {
-                entry.target.classList.remove('show')
+                entry.target.classList.remove('show');
             }
         })
     })
@@ -101,7 +145,10 @@ searchInput.addEventListener('input', (event) => {
             resultContainer.innerHTML = '';
             introductionText.classList.add('show');
             noResultsText.classList.remove('show');
+            clearSearchText();
             return;
+        } else {
+            storeSearchText(searchText);
         }
         let filteredData = filterData(searchText, strainData);
 
@@ -131,12 +178,12 @@ const startDemoMode = () => {
         if (demoIndex < demoText.length) {
             searchInput.value += demoText[demoIndex];
             demoIndex++;
-            setTimeout(typeNextLetter, 500);
+            debounce(typeNextLetter, 500)();
         } else {
             // Demo complete, reset styles after a delay
-            setTimeout(() => {
+            debounce(() => {
                 searchInput.classList.remove('demo-mode');
-                searchInput.placeholder = 'Search for strains...';
+                searchInput.placeholder = 'Enter a cannabis strain you are curious about';
                 let filteredData = filterData(searchInput.value, strainData);
                 filteredData.forEach(strain => {
                     const card = createCard(strain);
@@ -144,7 +191,7 @@ const startDemoMode = () => {
                 });
                 introductionText.classList.remove('show');
                 startObserving();
-            }, 750);
+            }, 750)();
         }
     };
     debounce(() => {

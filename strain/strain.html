@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strain Info</title>
+    <link rel="stylesheet" href="../bootstrap-5.3.3-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="strain.css">
+    <link rel="icon" type="image/png" sizes="192x192" href="../assets/strainfinder_fav.png">
+</head>
+
+<body>
+    <header>
+        <a href="../index.html"><img src="../assets/logo_100.jpeg" alt="Strain finder logo"></a>
+        <h1>Strainfinder</h1>
+        <div class="search-container input-group">
+            <input type="text" id="search" placeholder="Enter a cannabis strain you are curious about">
+        </div>
+    </header>
+
+    <div class="container container-fluid">
+        <div class="row">
+            <div class="col-12 col-md-6 img-container">
+                <img class="img-fluid" id="strain-img">
+                <div class="strain-effects">
+                    <h5>Strain Effects</h5>
+                    <div class="strain-effectspositives">
+                        <h6>Positives</h6>
+                        <ul id="strain-positives-list"></ul>
+                    </div>
+                    <div class="strain-effectsnegatives">
+                        <h6>Negatives</h6>
+                        <ul id="strain-negatives-list"></ul>
+                    </div>
+                    <div class="strain-effectshelps-with">
+                        <h6>Helps with</h6>
+                        <ul id="strain-helps-with-list"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <h1 id="strain-name"></h1>
+                <div class="strain-info">
+                    <p id="strain-type"></p>
+                    <p id="strain-thc"></p>
+                    <p id="strain-common-terpene"></p>
+                    <p id="strain-description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <a href="#">Terms of Service</a>
+        <a href="#">Imprint</a>
+        <a href="#">Privacy Policy</a>
+    </footer>
+</body>
+
+<script src="strain.js"></script>
+
+</html>
