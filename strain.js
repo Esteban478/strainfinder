@@ -35,9 +35,9 @@ const createHtmlElements = (strain) => {
     const strainShoppingLink = document.querySelector('#strain-shopping-link');
     strainImg.src = img_url;
     strainNameElement.textContent = name;
-    strainTypeElement.textContent = `Type: ${type}`;
-    strainThcElement.textContent = `THC: ${thc_level}`;
-    strainCommonTerpeneElement.textContent = `Main terpene: ${most_common_terpene}`;
+    strainTypeElement.textContent = `Type: ${type ? type : 'N/A'}`;
+    strainThcElement.textContent = `THC: ${thc_level ? thc_level : 'N/A'}`;
+    strainCommonTerpeneElement.textContent = `Main terpene: ${most_common_terpene ? most_common_terpene : 'N/A'}`;
     strainDescriptionElement.textContent = description;
     strainShoppingLink.href = `https://seedsupreme.com/catalogsearch/result/?q=${name}`;
     strainShoppingLink.textContent = `Shop ${name} at Seedsupreme`;

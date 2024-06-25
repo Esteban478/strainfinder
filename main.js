@@ -91,11 +91,11 @@ const createCard = (strain) => {
     cardContent.appendChild(subTitle);
 
     const thcContent = document.createElement('span');
-    thcContent.textContent = strain.thc_level ? `THC: ${strain.thc_level}` : 'THC: N/A';
+    thcContent.textContent = `THC: ${strain.thc_level ? strain.thc_level : 'N/A'}`;
     subTitle.appendChild(thcContent);
 
     const type = document.createElement('span');
-    type.textContent = `Type: ${strain.type}`;
+    type.textContent = `Type: ${strain.type ? strain.type : 'N/A'}`;
     subTitle.appendChild(type);
 
     const description = document.createElement('p');

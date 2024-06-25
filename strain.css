@@ -71,9 +71,20 @@ a {
 .strain-info > div {
     padding: 0.5rem 0 1rem;
 }
-#strain-shopping-link:before {
+/* #strain-shopping-link:before {
     display: inline-block;
     content: "→ ";
+    margin-right: 0.5rem;
+} */
+#strain-back-link {
+    font-size: 1.25rem;
+}
+#strain-back-link:before {
+    display: inline-block;
+    position: relative;
+    top: 2px;
+    content: "←";
+    font-size: 1.5rem;
     margin-right: 0.5rem;
 }
 @media screen and (min-width: 768px) {

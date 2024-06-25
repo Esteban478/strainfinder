@@ -16,6 +16,10 @@
 body {
     height: 100%;
     position: relative;
+    background-image: linear-gradient(rgba(251, 253, 239, 0.8), rgba(58, 82, 69, 0.8)),
+        url("./assets/bg_hemp_field_brighter.jpg");
+    background-size: cover;
+    background-attachment: fixed;
 }
 header {
     position: fixed;
@@ -28,7 +32,8 @@ header {
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     z-index: 1;
-    background-color: var(--beige);        
+    background-color: var(--beige);     
+    box-shadow: 0px -1px 6px var(--green);
 }
 header img {
     position: relative;
@@ -173,35 +178,35 @@ footer a {
     color: var(--beige);
 }
 @media (min-width: 480px) {
-    header h1 {
+    #home header h1 {
         display: block;
-        font-size: 1.5rem;
+        font-size: 1.75rem;
         top: 8px
     }
 }
 @media (min-width: 768px) {
-    header h1 {
+    #home header h1 {
         font-size: 2rem;
         top: 4px;
     }
-    .search-container {
+    #home .search-container {
         max-width: 50%;
     }
-    footer {
+    #home footer {
         gap: 6rem;
     }
-    footer a {
+    #home footer a {
         font-size: 1.25rem;
     }
 }
 @media (min-width: 1024px) {
-    .search-container {
+    #home .search-container {
         max-width: 420px;
     }
-    footer {
+    #home footer {
         gap: 8rem;
     }
-    footer a {
+    #home footer a {
         font-size: 1.5rem;
     }
 }
