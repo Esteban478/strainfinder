@@ -1,0 +1,84 @@
+* {
+    text-align: left;
+}
+header img {
+    top: 2px;
+}
+header h1 {
+    display: block;
+    font-size: 2.5rem;
+}
+header .search-container {
+    display: none;
+}
+a {
+    text-decoration: underline;
+    color: var(--link);
+}
+.img-container {
+    text-align: center;
+}
+#strain-name {
+    margin: 0;
+}
+#strain-img {
+    width: 320px;
+}
+.strain-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+.strain-effects {
+    display: flex;
+    flex-direction: column;
+}
+.strain-effects > div {
+    display: flex;
+    align-items: baseline;
+    padding: 0.25rem 0;
+    margin: 0;
+    gap: 0.5rem;
+}
+.strain-effects > small {
+    padding: 0.25rem 0 0;
+    line-height: 0.875rem;
+}
+.strain-effects > div > h6 {
+    margin: 0;
+}
+.strain-effects > div > ul {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    margin: 0;
+    gap: 0.25rem;
+    list-style-type: none;
+}
+.strain-effects > div > h6::before {
+    margin: 0 0.5rem 0 0;
+}
+.strain-effects-positives > h6::before {
+    content: "💚";
+}
+.strain-effects-negatives > h6::before {
+    content: "💔";
+}
+.strain-effects-helps-with > h6::before {
+    content: "💡";
+}
+.strain-info > div {
+    padding: 0.5rem 0 1rem;
+}
+#strain-shopping-link:before {
+    display: inline-block;
+    content: "→ ";
+    margin-right: 0.5rem;
+}
+@media screen and (min-width: 768px) {
+    .row {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+}

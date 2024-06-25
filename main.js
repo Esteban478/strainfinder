@@ -1,7 +1,9 @@
 const introductionText = document.querySelector('.introduction-text');
 const noResultsText = document.querySelector('.no-results-text');
+const searchInput = document.querySelector('#search');
 const demoLink = document.querySelector('#demo-link');
 const demoText = 'frost';
+let timeoutId;
 let resultContainer = document.querySelector('.result-container');
 let strainData = [];
 let demoIndex = 0;
@@ -13,10 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
             strainData = data;
             if (getSearchText()) {
                 const searchText = getSearchText();
-                console.log(searchText);
                 searchInput.value = searchText;
                 let filteredData = filterData(searchText, strainData);
-                console.log(filteredData);
                 filteredData.forEach(strain => {
                     const card = createCard(strain);
                     resultContainer.appendChild(card);
@@ -28,8 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching data:', error));
 });
-const searchInput = document.querySelector('#search');
-let timeoutId;
+
 
 // Debounce function
 const debounce = (func, delay) => {
@@ -66,7 +65,7 @@ const filterData = (searchText, strainData) => {
 const createCard = (strain) => {
     // wrap the whole card inside a link to the strain page which is /strain + strain name as url parameter
     const card = document.createElement('a');
-    card.href = `./strain/strain.html?name=${encodeURIComponent(strain.name)}`;
+    card.href = `/strain.html?name=${encodeURIComponent(strain.name)}`;
 
     // create the card
     const cardContainer = document.createElement('div');
@@ -78,9 +77,7 @@ const createCard = (strain) => {
 
     const image = document.createElement('img');
     image.classList.add('card-img-top', 'lazy-load');
-    // add data-src attribute to image
-    const randomNum = Math.floor(Math.random() * 20) + 1;
-    image.dataset.src = strain.img_url ? strain.img_url : `./assets/strain-${randomNum}.jpg`;
+    image.dataset.src = strain.img_url;
     image.src = './assets/strainfinder_400.jpeg';
     image.width = 240;
     cardContainer.appendChild(image);
@@ -185,7 +182,6 @@ const startDemoMode = () => {
 
     setTimeout(() => {
         // Simulate typing
-        demoIndex = 0;
         const typeNextLetter = () => {
             if (demoIndex < demoText.length) {
                 searchInput.value += demoText[demoIndex];
