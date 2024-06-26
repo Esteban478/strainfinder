@@ -16,11 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (getSearchText()) {
                 const searchText = getSearchText();
                 searchInput.value = searchText;
-                let filteredData = filterData(searchText, strainData);
-                filteredData.forEach(strain => {
-                    const card = createCard(strain);
-                    resultContainer.appendChild(card);
-                });
+                const filteredData = filterData(searchText, strainData);
+                filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
                 startObserving();
             } else {
                 introductionText.classList.add('show');

@@ -142,7 +142,6 @@ a {
 .hidden {
     opacity: 0;
     filter: blur(5px);
-    /* transform: translateX(-100%); */
     transition: all 1s;
     pointer-events: none;
 }
@@ -151,7 +150,6 @@ a {
     opacity: 1;
     filter: blur(0);
     pointer-events: visible;
-    /* transform: translateX(0); */
 }
 .description {
     display: -webkit-box;

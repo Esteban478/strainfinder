@@ -10,6 +10,7 @@ const fetchStrainData = () => {
             const strain = data.find(strain => strain.name === strainName);
             if (strain) {
                 createHtmlElements(strain);
+                console.log(strain);
             } else {
                 console.error('Strain not found');
             }
@@ -41,13 +42,13 @@ const createHtmlElements = (strain) => {
     strainDescriptionElement.textContent = description;
     strainShoppingLink.href = `https://seedsupreme.com/catalogsearch/result/?q=${name}`;
     strainShoppingLink.textContent = `Shop ${name} at Seedsupreme`;
-    for (let effect in effects.positives) {
+    for (let effect in positives) {
         strainEffectsPositivesList.appendChild(createEffectsListItem(effect));
     }
-    for (let effect in effects.negatives) {
+    for (let effect in negatives) {
         strainEffectsNegativesList.appendChild(createEffectsListItem(effect));
     }
-    for (let effect in effects.helps_with) {
+    for (let effect in helps_with) {
         strainEffectsHelpsWithList.appendChild(createEffectsListItem(effect));
     }
 }
