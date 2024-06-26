@@ -22,48 +22,61 @@
 
     <div class="container container-fluid">
         <div class="row">
-            <div class="col-12 col-md-6 img-container">
-                <h1 id="strain-name"></h1>
-                <img class="img-fluid" id="strain-img" src="./assets/strainfinder_400.jpeg">
-                <div class="strain-details">
-                    <h6 id="strain-thc"></h6>
-                    <h6 id="strain-common-terpene"></h6>
-                    <h6 id="strain-type"></h6>
+            <div class="col-12 col-md-6 left-col">
+                <div class="card">
+                    <h1 class="card-header" id="strain-name"></h1>
+                    <img class="img-fluid" class="card-img-top" id="strain-img" src="./assets/strainfinder_400.jpeg">
+                    <div class="strain-details card-body">
+                        <h6 id="strain-thc"></h6>
+                        <h6 id="strain-common-terpene"></h6>
+                        <h6 id="strain-type"></h6>
+                    </div>
+                </div>
+                <div class="strain-back-button-container">
+                    <a href="index.html" class="strain-back-link">Back to search results</a>
                 </div>
             </div>
-            <div class="col-12 col-md-6">
+            <div class="col-12 col-md-6 right-col">
                 <div class="strain-info">
-                    <div class="strain-effects-container">
-                        <h5>Effects</h5>
-                        <div class="strain-effects">
-                            <div class="strain-effects-positives">
-                                <h6>Positives:</h6>
-                                <ul id="strain-positives-list"></ul>
+                    <div class="card">
+                        <h3 class="card-header">Effects</h3>
+                        <div class="strain-effects-container card-body">
+                            <div class="strain-effects">
+                                <div class="strain-effects-positives">
+                                    <h6>Positives:</h6>
+                                    <ul id="strain-positives-list"></ul>
+                                </div>
+                                <div class="strain-effects-negatives">
+                                    <h6>Negatives:</h6>
+                                    <ul id="strain-negatives-list"></ul>
+                                </div>
+                                <div class="strain-effects-helps-with">
+                                    <h6>Helps with:</h6>
+                                    <ul id="strain-helps-with-list"></ul>
+                                </div>
+                                <small id="strain-effects-disclaimer">This info is sourced from <a
+                                        href="https://leafly.com" target="_blank">leafly.com</a> and is not a substitute
+                                    for professional medical
+                                    advice. Seek the advice of a
+                                    health professional before using cannabis for a medical condition.</small>
                             </div>
-                            <div class="strain-effects-negatives">
-                                <h6>Negatives:</h6>
-                                <ul id="strain-negatives-list"></ul>
-                            </div>
-                            <div class="strain-effects-helps-with">
-                                <h6>Helps with:</h6>
-                                <ul id="strain-helps-with-list"></ul>
-                            </div>
-                            <small id="strain-effects-disclaimer">This info is sourced from <a href="https://leafly.com"
-                                    target="_blank">leafly.com</a> and is not a substitute for professional medical
-                                advice. Seek the advice of a
-                                health professional before using cannabis for a medical condition.</small>
                         </div>
                     </div>
-                    <div class="strain-description-container">
-                        <h5>Description</h5>
-                        <p id="strain-description"></p>
+                    <div class="card">
+                        <div class="strain-description-container">
+                            <h3 class="card-header">Description</h3>
+                            <p class="card-body" id="strain-description"></p>
+                        </div>
                     </div>
-                    <div class="strain-shopping-container">
-                        <h5>Buy your beans here</h5>
-                        <a href="#" id="strain-shopping-link" target="_blank">Shop STRAIN NAME at STRAIN SHOP</a>
+                    <div class="card">
+                        <h3 class="card-header">Buy your beans here</h3>
+                        <div class="card-body strain-shopping-container">
+                            <a href="#" class="strain-shopping-link" target="_blank"></a>
+                            <a href="#" class="strain-shopping-link de" target="_blank"></a>
+                        </div>
                     </div>
                     <div class="strain-back-button-container">
-                        <a href="index.html" id="strain-back-link">Back to search results</a>
+                        <a href="index.html" class="strain-back-link">Back to search results</a>
                     </div>
                 </div>
             </div>

@@ -33,7 +33,8 @@ const createHtmlElements = (strain) => {
     const strainEffectsPositivesList = document.querySelector('#strain-positives-list');
     const strainEffectsNegativesList = document.querySelector('#strain-negatives-list');
     const strainEffectsHelpsWithList = document.querySelector('#strain-helps-with-list');
-    const strainShoppingLink = document.querySelector('#strain-shopping-link');
+    const strainShoppingLink = document.querySelector('.strain-shopping-link');
+    const strainShoppingLinkDE = document.querySelector('.strain-shopping-link.de');
     strainImg.src = img_url;
     strainNameElement.textContent = name;
     strainTypeElement.textContent = `Type: ${type ? type : 'N/A'}`;
@@ -42,6 +43,8 @@ const createHtmlElements = (strain) => {
     strainDescriptionElement.textContent = description;
     strainShoppingLink.href = `https://seedsupreme.com/catalogsearch/result/?q=${name}`;
     strainShoppingLink.textContent = `Shop ${name} at Seedsupreme`;
+    strainShoppingLinkDE.href = `https://www.hanfsamenladen.com/search/${name};`
+    strainShoppingLinkDE.textContent = `Kaufe ${name} im Hanfsamenladen`;
     for (let effect in positives) {
         strainEffectsPositivesList.appendChild(createEffectsListItem(effect));
     }

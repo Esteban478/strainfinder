@@ -168,7 +168,13 @@ const startDemoMode = () => {
         const overlay = document.getElementById('overlay');
         overlay.style.display = 'flex';
         container.classList.add('blur');
-    }, 400);
+    }, 300);
+
+    // Show the overlay text after short delay
+    setTimeout(() => {
+        const overlayText = document.getElementById('overlay-text');
+        overlayText.classList.add('show');
+    }, 600);
 
     // Highlight the input field and change the placeholder text
     setTimeout(() => {

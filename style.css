@@ -190,10 +190,10 @@ footer a {
     #home .search-container {
         max-width: 50%;
     }
-    #home footer {
+    footer {
         gap: 6rem;
     }
-    #home footer a {
+    footer a {
         font-size: 1.25rem;
     }
 }
@@ -201,10 +201,7 @@ footer a {
     #home .search-container {
         max-width: 420px;
     }
-    #home footer {
+    footer {
         gap: 8rem;
-    }
-    #home footer a {
-        font-size: 1.5rem;
     }
 }

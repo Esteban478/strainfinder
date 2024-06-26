@@ -15,20 +15,15 @@ a {
     text-decoration: underline;
     color: var(--link);
 }
-.img-container {
-    text-align: center;
+.card {
+    max-width: 480px;
+    margin: 0 auto;
+}
+.strain-info > .card {
+    margin: 0.5rem auto;
 }
 #strain-name {
     margin: 0;
-}
-#strain-img {
-    width: 320px;
-}
-.strain-details {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0.5rem 0;
 }
 .strain-effects {
     display: flex;
@@ -68,18 +63,22 @@ a {
 .strain-effects-helps-with > h6::before {
     content: "💡";
 }
-.strain-info > div {
-    padding: 0.5rem 0 1rem;
+.strain-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
 }
-/* #strain-shopping-link:before {
-    display: inline-block;
-    content: "→ ";
-    margin-right: 0.5rem;
-} */
-#strain-back-link {
+.strain-shopping-link {
+    display: block;
+    margin: 0.5rem 0;
+    color: var(--link);
+}
+.strain-back-link {
     font-size: 1.25rem;
+    color: var(--beige);
 }
-#strain-back-link:before {
+.strain-back-link:before {
     display: inline-block;
     position: relative;
     top: 2px;
@@ -87,9 +86,36 @@ a {
     font-size: 1.5rem;
     margin-right: 0.5rem;
 }
+.left-col .strain-back-link {
+    display: none;
+}
+.right-col .strain-back-link {
+    display: block;
+}
+@media screen and (min-width: 480px) {
+    #strain-img {
+        align-self: center;
+        max-width: 420px;
+    }
+}
 @media screen and (min-width: 768px) {
-    .row {
-        border: 1px solid #ccc;
-        border-radius: 5px;
+    .card {
+        max-width: none;
+    }
+    .strain-info>.card {
+        margin: 0.5rem 0;
+    }
+    #strain-img {
+        max-width: 100%;
+    }
+    .strain-info > .card:first-child{
+        margin-top: 0;
+    }
+    .left-col .strain-back-link {
+        margin-top: 0.5rem;
+        display: block;
+    }
+    .right-col .strain-back-link {
+        display: none;
     }
 }
