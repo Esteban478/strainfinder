@@ -15,6 +15,9 @@ a {
     text-decoration: underline;
     color: var(--link);
 }
+.max-width {
+    max-width: 1024px;
+}
 .header-back-link {
     display: block;
     position: absolute;
@@ -101,6 +104,9 @@ a {
     display: block;
 }
 @media screen and (min-width: 480px) {
+    .strain-details h6 {
+        font-size: 1.25rem;
+    }
     #strain-img {
         align-self: center;
         max-width: 420px;
@@ -110,14 +116,14 @@ a {
     .card {
         max-width: none;
     }
-    .strain-info>.card {
+    .strain-info > .card {
         margin: 0.5rem 0;
+    }
+    .strain-info > .card:first-child {
+        margin-top: 0;
     }
     #strain-img {
         max-width: 100%;
-    }
-    .strain-info > .card:first-child{
-        margin-top: 0;
     }
     .left-col .strain-back-link {
         margin-top: 0.5rem;
@@ -125,5 +131,32 @@ a {
     }
     .right-col .strain-back-link {
         display: none;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .strain-details h6 {
+        font-size: 1.5rem;
+    }
+    h6, p, li, a {
+        font-size: 1.1rem;
+    }
+    small, small a {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (min-width: 1025px) {
+    .header-back-link {
+        display: none;
+    }
+    .left-col .strain-back-link {
+        font-size: 1.5rem;
+    }
+    .strain-back-link:before {
+        top: 3px;
+        font-size: 2rem;
+        font-weight: bold;
+        margin-right: 0.5rem;
     }
 }

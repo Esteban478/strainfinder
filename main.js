@@ -72,6 +72,7 @@ const createCard = (strain) => {
     name.textContent = strain.name;
     cardContainer.appendChild(name);
 
+    // create the image
     const image = document.createElement('img');
     image.classList.add('card-img-top', 'lazy-load');
     image.dataset.src = strain.img_url;
@@ -79,6 +80,7 @@ const createCard = (strain) => {
     image.width = 240;
     cardContainer.appendChild(image);
 
+    // create the card body
     const cardContent = document.createElement('div');
     cardContent.classList.add('card-body');
     cardContainer.appendChild(cardContent);
@@ -109,19 +111,18 @@ const startObserving = () => {
             if (entry.isIntersecting) {
                 // Lazy load the image
                 const img = entry.target.querySelector('.lazy-load');
+                entry.target.classList.add('show');
                 if (img) {
                     img.src = img.getAttribute('data-src');
-                    img.onload = () => {
-                        img.classList.add('loaded'); // Optional: Add a class when the image is loaded
-                    };
                     img.removeAttribute('data-src');
                 }
-                entry.target.classList.add('show');
                 observer.unobserve(entry.target);
             } else {
                 entry.target.classList.remove('show');
             }
         })
+    }, {
+        rootMargin: '0px 0px 100px 0px'
     })
     const hiddenElements = resultContainer.querySelectorAll('.hidden');
     hiddenElements.forEach((el) => observer.observe(el))
