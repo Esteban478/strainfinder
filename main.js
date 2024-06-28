@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error fetching data:', error));
 });
 
-
 document.querySelector('#filter-button').addEventListener('click', () => {
     const filterButtonIcon = document.querySelector('.filter-button-icon');
     const filterSection = document.querySelector('.filter-container');
