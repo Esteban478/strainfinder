@@ -28,17 +28,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 document.querySelector('#filter-button').addEventListener('click', () => {
-    console.log('open filters');
     const filterButtonIcon = document.querySelector('.filter-button-icon');
     const filterSection = document.querySelector('.filter-container');
+    const container = document.querySelector('.container');
     if (filterSection.classList.contains('open')) {
         filterSection.classList.remove('open');
         filterButtonIcon.classList.remove('fa-angle-up');
         filterButtonIcon.classList.add('fa-angle-down');
+        container.classList.remove('filter-opened');
     } else {
         filterSection.classList.add('open');
         filterButtonIcon.classList.remove('fa-angle-down');
         filterButtonIcon.classList.add('fa-angle-up');
+        container.classList.add('filter-opened');
     }
 });
 
