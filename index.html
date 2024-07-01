@@ -25,24 +25,24 @@
         <p id="overlay-text" class="hidden">Demo Mode</p>
     </div>
     <div class="filter-container">
-        <h5>Search for:</h5>
-        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-            <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="btncheck1">Name</label>
+        <h5>Sort by:</h5>
+        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+            <input type="radio" class="btn-check sort-by-input" name="options" id="name" autocomplete="off">
+            <label class="btn btn-outline-primary sort-by" id="name" for="name">Name</label>
 
-            <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck2">THC</label>
+            <input type="radio" class="btn-check sort-by-input" name="options" id="thc_level" autocomplete="off">
+            <label class="btn btn-outline-primary sort-by" id="thc_level" for="thc_level">THC</label>
 
-            <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
-            <label class="btn btn-outline-primary" for="btncheck3">Description</label>
+            <input type="radio" class="btn-check sort-by-input" name="options" id="type" autocomplete="off">
+            <label class="btn btn-outline-primary sort-by" id="type" for="type">Type</label>
         </div>
+        <button class="btn btn-outline-primary sorting-order">↓ ASC</button>
     </div>
     <div class="content container-fluid">
         <div class="introduction-text hidden">
             <h4>Want to know more about a specific cannabis strain?</h4>
             <h5>Start typing in the search bar and see what we have!</h5>
             <p>Try searching for: "Gorilla"</p>
-            <!-- <small>Hint: You can also search for type or thc level</small> -->
             <p id="start-demo">Show me how it works!</aü>
         </div>
         <div class="no-results-text hidden">

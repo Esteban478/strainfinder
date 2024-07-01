@@ -5,7 +5,8 @@
     box-sizing: border-box;
     font-family: "Pathway Gothic One", sans-serif;
     font-weight: 400;
-    font-style: normal; 
+    font-style: normal;
+    font-display: swap;
 }
 :root {
     --beige: #fbfdef;
@@ -100,12 +101,20 @@ header #filter-button {
 .filter-container.open > .btn-group {
     opacity: 1;
 }
-.filter-container > .btn-group > .btn {
+.filter-container > .btn-group > .btn,
+.filter-container > .btn {
     color: var(--green);
     background-color: var(--beige);
     border: 1px solid var(--light-link);
 }
-.filter-container > .btn-group > .btn-check:checked+.btn {
+.filter-container > .btn-group > .btn-check:checked+.btn,
+.filter-container > .btn-check:checked+.btn {
+    color: var(--beige);
+    background-color: var(--dark-link);
+    border-color: var(--link);
+    box-shadow: 0px 0px 6px var(--link) inset;
+}
+:not(.btn-check) + .btn:active {
     color: var(--beige);
     background-color: var(--dark-link);
     border-color: var(--link);

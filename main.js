@@ -6,6 +6,8 @@ const demoText = 'frost';
 let timeoutId;
 let resultContainer = document.querySelector('.result-container');
 let strainData = [];
+let sortingBy = 'name';
+let sortingOrder = 'asc';
 let demoIndex = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,14 +15,28 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             strainData = data;
-            if (getSearchText()) {
-                const searchText = getSearchText();
+            if (getSessionData('sortingBy')) {
+                sortingBy = getSessionData('sortingBy');
+                document.querySelectorAll('.sort-by-input').forEach(button => {
+                    button.id === sortingBy ? button.checked = true : button.checked = false
+                });
+            }
+            if (getSessionData('sortingOrder')) {
+                sortingOrder = getSessionData('sortingOrder');
+                document.querySelector('.sorting-order').textContent = sortingOrder === 'asc' ? '↓ ASC' : '↑ DESC';
+            }
+            if (getSessionData('searchText')) {
+                const searchText = getSessionData('searchText');
                 searchInput.value = searchText;
                 const filteredData = filterData(searchText, strainData);
+                sortBy(filteredData, sortingBy, sortingOrder);
                 filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
                 startObserving();
             } else {
+                sortingBy = 'name';
+                sortingOrder = 'asc';
                 introductionText.classList.add('show');
+                // alert('dom content loaded: introduction text shown');
             }
         })
         .catch(error => console.error('Error fetching data:', error));
@@ -29,23 +45,60 @@ document.addEventListener('DOMContentLoaded', () => {
 document.querySelector('#filter-button').addEventListener('click', () => {
     const filterButtonIcon = document.querySelector('.filter-button-icon');
     const filterSection = document.querySelector('.filter-container');
-    const container = document.querySelector('.container');
+    const content = document.querySelector('.content');
     if (filterSection.classList.contains('open')) {
         filterSection.classList.remove('open');
         filterButtonIcon.classList.remove('fa-angle-up');
         filterButtonIcon.classList.add('fa-angle-down');
-        container.classList.remove('filter-opened');
+        content.classList.remove('filter-opened');
     } else {
         filterSection.classList.add('open');
         filterButtonIcon.classList.remove('fa-angle-down');
         filterButtonIcon.classList.add('fa-angle-up');
-        container.classList.add('filter-opened');
+        content.classList.add('filter-opened');
     }
 });
 
+document.querySelector('#start-demo').addEventListener('click', () => startDemoMode());
+
+document.querySelectorAll('.sort-by').forEach(button => {
+    button.addEventListener('click', () => {
+        const key = button.id;
+        const filteredData = filterData(getSessionData('searchText'), strainData);
+        saveSessionData('sortingBy', key);
+        if (filteredData) {
+            sortBy(filteredData, key, getSessionData('sortingOrder'));
+            resultContainer.innerHTML = '';
+            filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
+            startObserving();
+        }
+    });
+});
+
+// set sorting order on button click
+document.querySelector('.sorting-order').addEventListener('click', () => {
+    const filteredData = filterData(getSessionData('searchText'), strainData);
+    if (sortingOrder === 'asc') {
+        document.querySelector('.sorting-order').textContent = '↑ DESC';
+        sortingOrder = 'desc';
+        sortBy(filteredData, getSessionData('sortingBy'), sortingOrder);
+        saveSessionData('sortingOrder', 'desc');
+        resultContainer.innerHTML = '';
+        filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
+        startObserving();
+    } else if (sortingOrder === 'desc') {
+        document.querySelector('.sorting-order').textContent = '↓ ASC';
+        sortingOrder = 'asc';
+        sortBy(filteredData, getSessionData('sortingBy'), sortingOrder);
+        saveSessionData('sortingOrder', 'asc');
+        resultContainer.innerHTML = '';
+        filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
+        startObserving();
+    }
+});
 
 // UTILS
-// Debounce function
+// debounce function
 const debounce = (func, delay) => {
     return (...args) => {
         if (timeoutId) clearTimeout(timeoutId);
@@ -56,16 +109,40 @@ const debounce = (func, delay) => {
 };
 
 // session storage functions
-const storeSearchText = (searchText) => {
-    sessionStorage.setItem('searchText', searchText);
+const saveSessionData = (key, value) => {
+    sessionStorage.setItem(key, value);
 }
 
-const getSearchText = () => {
-    return sessionStorage.getItem('searchText');
+const getSessionData = (key) => {
+    return sessionStorage.getItem(key);
 }
 
-const clearSearchText = () => {
-    sessionStorage.removeItem('searchText');
+const clearSessionData = (key) => {
+    sessionStorage.removeItem(key);
+}
+
+const sortBy = (data, key, order) => {
+    if (order === 'desc') {
+        data.sort((a, b) => {
+            if (a[key] < b[key]) {
+                return 1;
+            }
+            if (a[key] > b[key]) {
+                return -1;
+            }
+            return 0;
+        });
+    } else if (order === 'asc') {
+        data.sort((a, b) => {
+            if (a[key] < b[key]) {
+                return -1;
+            }
+            if (a[key] > b[key]) {
+                return 1;
+            }
+            return 0;
+        });
+    }
 }
 
 const filterData = (searchText, strainData) => {
@@ -158,10 +235,10 @@ searchInput.addEventListener('input', (event) => {
             resultContainer.innerHTML = '';
             introductionText.classList.add('show');
             noResultsText.classList.remove('show');
-            clearSearchText();
+            clearSessionData('searchText');
             return;
         } else {
-            storeSearchText(searchText);
+            saveSessionData('searchText', searchText);
         }
         let filteredData = filterData(searchText, strainData);
 
@@ -180,13 +257,12 @@ searchInput.addEventListener('input', (event) => {
 });
 
 const startDemoMode = () => {
-    const container = document.querySelector('.container');
-
+    const content = document.querySelector('.content');
     // Show the overlay after short delay
     setTimeout(() => {
         const overlay = document.getElementById('overlay');
         overlay.style.display = 'flex';
-        container.classList.add('blur');
+        content.classList.add('blur');
     }, 300);
 
     // Show the overlay text after short delay
@@ -217,14 +293,15 @@ const startDemoMode = () => {
                     const demoButton = document.getElementById('start-demo');
                     demoButton.style.display = 'block';
                     let filteredData = filterData(searchInput.value, strainData);
+                    sortBy(filteredData, 'name', 'asc')
                     filteredData.forEach(strain => {
                         const card = createCard(strain);
                         resultContainer.appendChild(card);
                     });
-                    container.classList.remove('blur');
+                    content.classList.remove('blur');
                     introductionText.classList.remove('show');
                     startObserving();
-                    storeSearchText(demoText);
+                    saveSessionData('searchText', demoText);
                 }, 750)();
             }
         };
