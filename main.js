@@ -10,6 +10,8 @@ let sortingBy = 'name';
 let sortingOrder = 'asc';
 let demoIndex = 0;
 
+// EVEN LISTENERS
+// event listener to fetch data
 document.addEventListener('DOMContentLoaded', () => {
     fetch('https://strainsapi.netlify.app/strains.json')
         .then(response => response.json())
@@ -41,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => console.error('Error fetching data:', error));
 });
 
+// event listener to open filter section
 document.querySelector('#filter-button').addEventListener('click', () => {
     const filterButtonIcon = document.querySelector('.filter-button-icon');
     const filterSection = document.querySelector('.filter-container');
@@ -58,15 +61,18 @@ document.querySelector('#filter-button').addEventListener('click', () => {
     }
 });
 
+// event listener to start demo
 document.querySelector('#start-demo').addEventListener('click', () => startDemoMode());
 
+// event listener to set sorting
 document.querySelectorAll('.sort-by').forEach(button => {
     button.addEventListener('click', () => {
         const key = button.id;
         const filteredData = filterData(getSessionData('searchText'), strainData);
+        sortingBy = key;
         saveSessionData('sortingBy', key);
         if (filteredData) {
-            sortBy(filteredData, key, getSessionData('sortingOrder'));
+            sortBy(filteredData, key, sortingOrder);
             resultContainer.innerHTML = '';
             filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
             startObserving();
@@ -74,7 +80,7 @@ document.querySelectorAll('.sort-by').forEach(button => {
     });
 });
 
-// set sorting order on button click
+// event listener to set sorting order
 document.querySelector('.sorting-order').addEventListener('click', () => {
     const filteredData = filterData(getSessionData('searchText'), strainData);
     if (sortingOrder === 'asc') {
@@ -82,7 +88,7 @@ document.querySelector('.sorting-order').addEventListener('click', () => {
         sortingOrder = 'desc';
         saveSessionData('sortingOrder', 'desc');
         if (filteredData) {
-            sortBy(filteredData, getSessionData('sortingBy'), sortingOrder);
+            sortBy(filteredData, sortingBy, sortingOrder);
             resultContainer.innerHTML = '';
             filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
             startObserving();
@@ -92,12 +98,46 @@ document.querySelector('.sorting-order').addEventListener('click', () => {
         sortingOrder = 'asc';
         saveSessionData('sortingOrder', 'asc');
         if (filteredData) {
-            sortBy(filteredData, getSessionData('sortingBy'), sortingOrder);
+            sortBy(filteredData, sortingBy, sortingOrder);
             resultContainer.innerHTML = '';
             filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
             startObserving();
         }
     }
+});
+
+// event listener to search
+searchInput.addEventListener('input', (event) => {
+    debounce(() => {
+        let searchText = event.target.value.toLowerCase();
+        introductionText.classList.remove('show');
+        noResultsText.classList.remove('show');
+        resultContainer.innerHTML = '';
+
+        if (searchText === '') {
+            // Clear previous results
+            resultContainer.innerHTML = '';
+            introductionText.classList.add('show');
+            noResultsText.classList.remove('show');
+            clearSessionData('searchText');
+            return;
+        } else {
+            saveSessionData('searchText', searchText);
+        }
+        let filteredData = filterData(searchText, strainData);
+
+        if (searchText !== '' && !filteredData || filteredData.length === 0) {
+            resultContainer.innerHTML = '';
+            noResultsText.classList.add('show');
+            noResultsText.innerHTML = `<h4>No results found for "${searchText}"</h4>`;
+            return;
+        }
+        filteredData.forEach(strain => {
+            const card = createCard(strain);
+            resultContainer.appendChild(card);
+        });
+        startObserving();
+    }, 350)();
 });
 
 // UTILS
@@ -111,19 +151,22 @@ const debounce = (func, delay) => {
     };
 };
 
-// session storage functions
+// save session data
 const saveSessionData = (key, value) => {
     sessionStorage.setItem(key, value);
 }
 
+// retrieve session data
 const getSessionData = (key) => {
     return sessionStorage.getItem(key);
 }
 
+// delete session data
 const clearSessionData = (key) => {
     sessionStorage.removeItem(key);
 }
 
+// sort data
 const sortBy = (data, key, order) => {
     if (order === 'desc') {
         data.sort((a, b) => {
@@ -148,6 +191,7 @@ const sortBy = (data, key, order) => {
     }
 }
 
+// filter data from search
 const filterData = (searchText, strainData) => {
     if (!searchText) return null;
     return strainData.filter(strain => {
@@ -157,6 +201,7 @@ const filterData = (searchText, strainData) => {
     });
 }
 
+// create html cards
 const createCard = (strain) => {
     // wrap the whole card inside a link to the strain page which is /strain + strain name as url parameter
     const card = document.createElement('a');
@@ -203,6 +248,7 @@ const createCard = (strain) => {
     return card;
 }
 
+// lazy load and effects on scroll
 const startObserving = () => {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -226,39 +272,7 @@ const startObserving = () => {
     hiddenElements.forEach((el) => observer.observe(el))
 }
 
-searchInput.addEventListener('input', (event) => {
-    debounce(() => {
-        let searchText = event.target.value.toLowerCase();
-        introductionText.classList.remove('show');
-        noResultsText.classList.remove('show');
-        resultContainer.innerHTML = '';
-
-        if (searchText === '') {
-            // Clear previous results
-            resultContainer.innerHTML = '';
-            introductionText.classList.add('show');
-            noResultsText.classList.remove('show');
-            clearSessionData('searchText');
-            return;
-        } else {
-            saveSessionData('searchText', searchText);
-        }
-        let filteredData = filterData(searchText, strainData);
-
-        if (searchText !== '' && !filteredData || filteredData.length === 0) {
-            resultContainer.innerHTML = '';
-            noResultsText.classList.add('show');
-            noResultsText.innerHTML = `<h4>No results found for "${searchText}"</h4>`;
-            return;
-        }
-        filteredData.forEach(strain => {
-            const card = createCard(strain);
-            resultContainer.appendChild(card);
-        });
-        startObserving();
-    }, 350)();
-});
-
+// start demo mode
 const startDemoMode = () => {
     const content = document.querySelector('.content');
     // Show the overlay after short delay
@@ -317,4 +331,17 @@ const startDemoMode = () => {
     setTimeout(() => {
         overlay.style.display = 'none';
     }, 6660);
+};
+
+// update the scroll indicator
+const updateScrollIndicator = () => {
+    var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    var scrolled = (winScroll / height) * 100;
+    document.querySelector(".scroll-indicator-bar").style.width = scrolled + "%";
+}
+
+// on scroll update the scroll indicator
+window.onscroll = () => {
+    updateScrollIndicator();
 };
