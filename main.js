@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 sortingBy = 'name';
                 sortingOrder = 'asc';
                 introductionText.classList.add('show');
-                // alert('dom content loaded: introduction text shown');
             }
         })
         .catch(error => console.error('Error fetching data:', error));
@@ -81,19 +80,23 @@ document.querySelector('.sorting-order').addEventListener('click', () => {
     if (sortingOrder === 'asc') {
         document.querySelector('.sorting-order').textContent = '↑ DESC';
         sortingOrder = 'desc';
-        sortBy(filteredData, getSessionData('sortingBy'), sortingOrder);
         saveSessionData('sortingOrder', 'desc');
-        resultContainer.innerHTML = '';
-        filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
-        startObserving();
+        if (filteredData) {
+            sortBy(filteredData, getSessionData('sortingBy'), sortingOrder);
+            resultContainer.innerHTML = '';
+            filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
+            startObserving();
+        }
     } else if (sortingOrder === 'desc') {
         document.querySelector('.sorting-order').textContent = '↓ ASC';
         sortingOrder = 'asc';
-        sortBy(filteredData, getSessionData('sortingBy'), sortingOrder);
         saveSessionData('sortingOrder', 'asc');
-        resultContainer.innerHTML = '';
-        filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
-        startObserving();
+        if (filteredData) {
+            sortBy(filteredData, getSessionData('sortingBy'), sortingOrder);
+            resultContainer.innerHTML = '';
+            filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
+            startObserving();
+        }
     }
 });
 
