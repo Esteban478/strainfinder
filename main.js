@@ -127,6 +127,7 @@ searchInput.addEventListener('input', (event) => {
         let filteredData = filterData(searchText, strainData);
 
         sortBy(filteredData, sortingBy, sortingOrder);
+        console.log(filteredData)
 
         if (searchText !== '' && !filteredData || filteredData.length === 0) {
             resultContainer.innerHTML = '';
@@ -170,28 +171,18 @@ const clearSessionData = (key) => {
 
 // sort data
 const sortBy = (data, key, order) => {
-    if (order === 'desc') {
-        data.sort((a, b) => {
-            if (a[key] < b[key]) {
-                return 1;
-            }
-            if (a[key] > b[key]) {
-                return -1;
-            }
-            return 0;
-        });
-    } else if (order === 'asc') {
-        data.sort((a, b) => {
-            if (a[key] < b[key]) {
-                return -1;
-            }
-            if (a[key] > b[key]) {
-                return 1;
-            }
-            return 0;
-        });
-    }
-}
+    const multiplier = order === 'desc' ? -1 : 1;
+    data.sort((a, b) => {
+        if (a[key] < b[key]) {
+            return -1 * multiplier;
+        }
+        if (a[key] > b[key]) {
+            return 1 * multiplier;
+        }
+        return 0;
+    });
+};
+
 
 // filter data from search
 const filterData = (searchText, strainData) => {

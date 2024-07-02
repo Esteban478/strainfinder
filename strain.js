@@ -1,6 +1,7 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const strainName = urlParams.get('name');
+const noInfoText = 'No information available for this strain.'
 document.title = strainName;
 
 const fetchStrainData = () => {
@@ -10,7 +11,6 @@ const fetchStrainData = () => {
             const strain = data.find(strain => strain.name === strainName);
             if (strain) {
                 createHtmlElements(strain);
-                console.log(strain);
             } else {
                 console.error('Strain not found');
             }
@@ -45,14 +45,28 @@ const createHtmlElements = (strain) => {
     strainShoppingLink.textContent = `Shop ${name} at Seedsupreme`;
     strainShoppingLinkDE.href = `https://www.hanfsamenladen.com/search/${name};`
     strainShoppingLinkDE.textContent = `Kaufe ${name} im Hanfsamenladen`;
-    for (let effect in positives) {
-        strainEffectsPositivesList.appendChild(createEffectsListItem(effect));
+
+    // only display if object not empty, otherwise display message "no information available"
+    if (!Object.keys(positives).length === 0) {
+        for (let effect in positives) {
+            strainEffectsPositivesList.appendChild(createEffectsListItem(effect));
+        }
+    } else {
+        strainEffectsPositivesList.textContent = noInfoText;
     }
-    for (let effect in negatives) {
-        strainEffectsNegativesList.appendChild(createEffectsListItem(effect));
+    if (!Object.keys(negatives).length === 0) {
+        for (let effect in negatives) {
+            strainEffectsNegativesList.appendChild(createEffectsListItem(effect));
+        }
+    } else {
+        strainEffectsNegativesList.textContent = noInfoText;
     }
-    for (let effect in helps_with) {
-        strainEffectsHelpsWithList.appendChild(createEffectsListItem(effect));
+    if (!Object.keys(helps_with).length === 0) {
+        for (let effect in helps_with) {
+            strainEffectsHelpsWithList.appendChild(createEffectsListItem(effect));
+        }
+    } else {
+        strainEffectsHelpsWithList.textContent = noInfoText;
     }
 }
 
