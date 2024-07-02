@@ -126,6 +126,8 @@ searchInput.addEventListener('input', (event) => {
         }
         let filteredData = filterData(searchText, strainData);
 
+        sortBy(filteredData, sortingBy, sortingOrder);
+
         if (searchText !== '' && !filteredData || filteredData.length === 0) {
             resultContainer.innerHTML = '';
             noResultsText.classList.add('show');
