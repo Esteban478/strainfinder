@@ -172,17 +172,38 @@ const clearSessionData = (key) => {
 // sort data
 const sortBy = (data, key, order) => {
     const multiplier = order === 'desc' ? -1 : 1;
+
     data.sort((a, b) => {
-        if (a[key] < b[key]) {
-            return -1 * multiplier;
-        }
-        if (a[key] > b[key]) {
-            return 1 * multiplier;
+        const aValue = a[key];
+        const bValue = b[key];
+
+        // Check if values are numerical strings (e.g., '25%')
+        const aIsNumeric = !isNaN(parseFloat(aValue));
+        const bIsNumeric = !isNaN(parseFloat(bValue));
+
+        if (aIsNumeric && bIsNumeric) {
+            // Convert to float for numerical comparison
+            const numA = parseFloat(aValue);
+            const numB = parseFloat(bValue);
+
+            if (numA < numB) {
+                return -1 * multiplier;
+            }
+            if (numA > numB) {
+                return 1 * multiplier;
+            }
+        } else {
+            // Lexicographic comparison for pure strings
+            if (aValue < bValue) {
+                return -1 * multiplier;
+            }
+            if (aValue > bValue) {
+                return 1 * multiplier;
+            }
         }
         return 0;
     });
 };
-
 
 // filter data from search
 const filterData = (searchText, strainData) => {
