@@ -161,8 +161,8 @@ header #filter-button {
 .clear-icon {
     display: none;
     position: absolute;
-    right: 0.5rem;
     top: 0.5rem;
+    right: 0.75rem;
     cursor: pointer;
     font-size: 1.25rem;
     color: #888;
@@ -252,6 +252,27 @@ a {
     -webkit-line-clamp: 3;
     white-space: pre-wrap;
 }
+.to-top-button {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    color: var(--beige);
+    background-color: var(--dark-link);
+    border-color: var(--link);
+    box-shadow: 0px 0px 6px var(--link) inset;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+    }
+.to-top-button .arrow-up {
+    margin-right: 0.25rem;
+    font-size: 1rem;
+}
 footer {
     position: absolute;
     bottom: 0;
@@ -268,6 +289,12 @@ footer a {
     text-decoration: none;
     font-size: 1rem;
     color: var(--beige);
+}
+@media screen and (max-width: 768px) {
+    .to-top-button.show {
+        visibility: visible;
+        opacity: 1;
+    }
 }
 @media screen and (max-width: 1024px) {
     .scroll-indicator {
@@ -317,7 +344,6 @@ footer a {
     }
 }
 
-/* create media query for hover */
 @media (hover) {
     #home .card:hover {
         transform: scale(1.05);

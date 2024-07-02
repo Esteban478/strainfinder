@@ -14,6 +14,7 @@ let demoIndex = 0;
 // event listener to fetch data
 document.addEventListener('DOMContentLoaded', () => {
     const clearIcon = document.querySelector('#clearIcon');
+    const toTopButton = document.querySelector('#toTopButton');
     fetch('https://strainsapi.netlify.app/strains.json')
         .then(response => response.json())
         .then(data => {
@@ -66,7 +67,25 @@ document.addEventListener('DOMContentLoaded', () => {
         toggleClearIcon();
     });
 
+    const checkScrollPosition = () => {
+        if (window.scrollY > 400) {
+            toTopButton.classList.add('show');
+        } else {
+            toTopButton.classList.remove('show');
+        }
+    };
+
+    window.addEventListener('scroll', checkScrollPosition);
+
+    toTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
     toggleClearIcon();
+    checkScrollPosition();
 });
 
 // event listener to open filter section
