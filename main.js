@@ -13,6 +13,7 @@ let demoIndex = 0;
 // EVEN LISTENERS
 // event listener to fetch data
 document.addEventListener('DOMContentLoaded', () => {
+    const clearIcon = document.querySelector('#clearIcon');
     fetch('https://strainsapi.netlify.app/strains.json')
         .then(response => response.json())
         .then(data => {
@@ -34,6 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sortBy(filteredData, sortingBy, sortingOrder);
                 filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
                 startObserving();
+                toggleClearIcon();
             } else {
                 sortingBy = 'name';
                 sortingOrder = 'asc';
@@ -41,6 +43,30 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         })
         .catch(error => console.error('Error fetching data:', error));
+
+    const toggleClearIcon = () => {
+        if (searchInput.value.trim() !== '') {
+            clearIcon.style.display = 'block';
+        } else {
+            clearIcon.style.display = 'none';
+        }
+    };
+
+    searchInput.addEventListener('input', toggleClearIcon);
+
+    clearIcon.addEventListener('click', () => {
+        searchInput.value = '';
+        resultContainer.innerHTML = '';
+        introductionText.classList.add('show');
+        noResultsText.classList.remove('show');
+        clearIcon.style.display = 'none';
+        sessionStorage.removeItem('searchtext'); // Clear session storage
+        // Clear the search text variable if applicable
+        // window.searchtext = ''; // Uncomment if you have a global searchtext variable
+        toggleClearIcon();
+    });
+
+    toggleClearIcon();
 });
 
 // event listener to open filter section
@@ -358,4 +384,10 @@ const updateScrollIndicator = () => {
 // on scroll update the scroll indicator
 window.onscroll = () => {
     updateScrollIndicator();
+};
+
+// clear search field
+const clearSearch = () => {
+    searchInput.value = '';
+    searchInput.focus();
 };

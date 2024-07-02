@@ -139,6 +139,7 @@ header #filter-button {
 }
 .search-container {
     position: relative;
+    display: inline-block;
     z-index: 1;
     margin-bottom: 20px;
     display: flex;
@@ -148,7 +149,7 @@ header #filter-button {
     flex: 1;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 5px !important;
 }
 .search-container button {
     padding: 10px;
@@ -156,6 +157,18 @@ header #filter-button {
     border-radius: 0 5px 5px 0;
     background-color: #f8f9fa;
     color: #333;
+}
+.clear-icon {
+    display: none;
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    cursor: pointer;
+    font-size: 1.25rem;
+    color: #888;
+}
+input[type="text"]:not(:placeholder-shown)~.clear-icon {
+    display: block;
 }
 .overlay {
     position: fixed;
