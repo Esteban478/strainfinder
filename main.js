@@ -61,14 +61,12 @@ document.addEventListener('DOMContentLoaded', () => {
         introductionText.classList.add('show');
         noResultsText.classList.remove('show');
         clearIcon.style.display = 'none';
-        sessionStorage.removeItem('searchtext'); // Clear session storage
-        // Clear the search text variable if applicable
-        // window.searchtext = ''; // Uncomment if you have a global searchtext variable
+        clearSessionData('searchtext');
         toggleClearIcon();
     });
 
     const checkScrollPosition = () => {
-        if (window.scrollY > 400) {
+        if (window.scrollY > 800) {
             toTopButton.classList.add('show');
         } else {
             toTopButton.classList.remove('show');
