@@ -285,6 +285,17 @@ footer a {
     font-size: 1rem;
     color: var(--beige);
 }
+/* styles for content pages */
+
+.container.content-page {
+    max-width: 1024px;
+    padding: calc(60px + 1rem) 1rem;
+}
+footer {
+    position: fixed;
+}
+
+/* media queries */
 @media screen and (max-width: 768px) {
     .to-top-button.show {
         visibility: visible;
