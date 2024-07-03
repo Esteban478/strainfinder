@@ -199,7 +199,7 @@ input[type="text"]:not(:placeholder-shown)~.clear-icon {
     position: absolute;
     top: 30vh;
 }
-#start-demo {
+#start-demo-button {
     width: fit-content;
     padding: 0.5rem 1rem;
     margin: 0 auto;
@@ -208,11 +208,6 @@ input[type="text"]:not(:placeholder-shown)~.clear-icon {
     border: 1px solid var(--green);
     border-radius: 5px;
     background-color: var(--beige);
-}
-#start-demo:hover {
-    background-color: var(--green);
-    color: var(--beige);
-    border: 1px solid var(--link);
 }
 .result-container {
     display: grid;
@@ -350,5 +345,10 @@ footer a {
     }
     header #filter-button:hover {
         background-color: var(--link);
+    }
+    #start-demo-button:hover {
+        background-color: var(--green);
+        color: var(--beige);
+        border: 1px solid var(--link);
     }
 }

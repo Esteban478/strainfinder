@@ -19,11 +19,13 @@ const fetchStrainData = () => {
 }
 fetchStrainData();
 
+// create html elements from data
 const createHtmlElements = (strain) => {
-    // let's do some destructuring
+    // destructure data
     const { img_url, name, type, thc_level, most_common_terpene, description, effects } = strain;
     const { positives, negatives, helps_with } = effects;
 
+    // create html elements
     const strainImg = document.querySelector('#strain-img');
     const strainNameElement = document.querySelector('#strain-name');
     const strainTypeElement = document.querySelector('#strain-type');
@@ -35,6 +37,8 @@ const createHtmlElements = (strain) => {
     const strainEffectsHelpsWithList = document.querySelector('#strain-helps-with-list');
     const strainShoppingLink = document.querySelector('.strain-shopping-link');
     const strainShoppingLinkDE = document.querySelector('.strain-shopping-link.de');
+
+    // fill html elements with data
     strainImg.src = img_url;
     strainNameElement.textContent = name;
     strainTypeElement.textContent = `Type: ${type ? type : 'N/A'}`;
@@ -46,28 +50,20 @@ const createHtmlElements = (strain) => {
     strainShoppingLinkDE.href = `https://www.hanfsamenladen.com/search/${name};`
     strainShoppingLinkDE.textContent = `Kaufe ${name} im Hanfsamenladen`;
 
-    // only display if object not empty, otherwise display message "no information available"
-    if (!Object.keys(positives).length === 0) {
-        for (let effect in positives) {
-            strainEffectsPositivesList.appendChild(createEffectsListItem(effect));
+    //  display effects if objects not empty, otherwise display a message
+    const displayEffects = (effectsList, effectsListElement, infoText) => {
+        if (Object.keys(effectsList).length !== 0) {
+            for (let effect in effectsList) {
+                effectsListElement.appendChild(createEffectsListItem(effect));
+            }
+        } else {
+            effectsListElement.textContent = infoText;
         }
-    } else {
-        strainEffectsPositivesList.textContent = noInfoText;
-    }
-    if (!Object.keys(negatives).length === 0) {
-        for (let effect in negatives) {
-            strainEffectsNegativesList.appendChild(createEffectsListItem(effect));
-        }
-    } else {
-        strainEffectsNegativesList.textContent = noInfoText;
-    }
-    if (!Object.keys(helps_with).length === 0) {
-        for (let effect in helps_with) {
-            strainEffectsHelpsWithList.appendChild(createEffectsListItem(effect));
-        }
-    } else {
-        strainEffectsHelpsWithList.textContent = noInfoText;
-    }
+    };
+
+    displayEffects(positives, strainEffectsPositivesList, noInfoText);
+    displayEffects(negatives, strainEffectsNegativesList, noInfoText);
+    displayEffects(helps_with, strainEffectsHelpsWithList, noInfoText);
 }
 
 const createEffectsListItem = (effect) => {

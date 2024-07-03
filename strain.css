@@ -53,6 +53,9 @@ a {
 }
 .strain-effects > div > h6 {
     margin: 0;
+    display: flex;
+    flex-direction: row;
+    white-space: nowrap;
 }
 .strain-effects > div > ul {
     display: flex;
@@ -61,6 +64,9 @@ a {
     margin: 0;
     gap: 0.25rem;
     list-style-type: none;
+}
+.strain-effects > div > ul > li {
+    white-space: nowrap;
 }
 .strain-effects > div > h6::before {
     margin: 0 0.5rem 0 0;

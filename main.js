@@ -1,50 +1,45 @@
-const introductionText = document.querySelector('.introduction-text');
-const noResultsText = document.querySelector('.no-results-text');
 const searchInput = document.querySelector('#search');
-const demoLink = document.querySelector('#demo-link');
-const demoText = 'frost';
-let timeoutId;
+const demoText = 'blueberry';
 let resultContainer = document.querySelector('.result-container');
+let timeoutId;
+let demoMode;
 let strainData = [];
-let sortingBy = 'name';
-let sortingOrder = 'asc';
+let searchQuery = sessionStorage.getItem('searchQuery') || '';
+let sortBy = sessionStorage.getItem('sortBy') || 'name';
+let sortingOrder = sessionStorage.getItem('sortingOrder') || 'asc';
 let demoIndex = 0;
 
-// EVEN LISTENERS
-// event listener to fetch data
+// EVENT LISTENERS
+// event listener to fetch data and intializing states
 document.addEventListener('DOMContentLoaded', () => {
     const clearIcon = document.querySelector('#clearIcon');
     const toTopButton = document.querySelector('#toTopButton');
+    const introductionText = document.querySelector('.introduction-text');
+    const noResultsText = document.querySelector('.no-results-text');
+
+    // fetch data
     fetch('https://strainsapi.netlify.app/strains.json')
         .then(response => response.json())
         .then(data => {
             strainData = data;
-            if (getSessionData('sortingBy')) {
-                sortingBy = getSessionData('sortingBy');
-                document.querySelectorAll('.sort-by-input').forEach(button => {
-                    button.id === sortingBy ? button.checked = true : button.checked = false
-                });
-            }
-            if (getSessionData('sortingOrder')) {
-                sortingOrder = getSessionData('sortingOrder');
-                document.querySelector('.sorting-order').textContent = sortingOrder === 'asc' ? '↓ ASC' : '↑ DESC';
-            }
-            if (getSessionData('searchText')) {
-                const searchText = getSessionData('searchText');
-                searchInput.value = searchText;
-                const filteredData = filterData(searchText, strainData);
-                sortBy(filteredData, sortingBy, sortingOrder);
+            if (searchQuery) {
+                searchInput.value = searchQuery;
+                const filteredData = filterData(searchQuery, strainData);
+                sortData(filteredData, sortBy, sortingOrder);
                 filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
                 startObserving();
                 toggleClearIcon();
             } else {
-                sortingBy = 'name';
-                sortingOrder = 'asc';
                 introductionText.classList.add('show');
             }
+            document.querySelectorAll('.sort-by-input').forEach(button => {
+                button.id === sortBy ? button.checked = true : button.checked = false
+            });
+            document.querySelector('.sorting-order').textContent = sortingOrder === 'asc' ? '↓ ASC' : '↑ DESC';
         })
         .catch(error => console.error('Error fetching data:', error));
 
+    // clear icon in search input
     const toggleClearIcon = () => {
         if (searchInput.value.trim() !== '') {
             clearIcon.style.display = 'block';
@@ -61,10 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
         introductionText.classList.add('show');
         noResultsText.classList.remove('show');
         clearIcon.style.display = 'none';
-        clearSessionData('searchtext');
+        searchQuery = '';
+        updateSessionStorage();
         toggleClearIcon();
     });
 
+    // scroll to top
     const checkScrollPosition = () => {
         if (window.scrollY > 800) {
             toTopButton.classList.add('show');
@@ -105,17 +102,17 @@ document.querySelector('#filter-button').addEventListener('click', () => {
 });
 
 // event listener to start demo
-document.querySelector('#start-demo').addEventListener('click', () => startDemoMode());
+document.querySelector('#start-demo-button').addEventListener('click', () => !demoMode ? startDemoMode() : null);
 
 // event listener to set sorting
 document.querySelectorAll('.sort-by').forEach(button => {
     button.addEventListener('click', () => {
         const key = button.id;
-        const filteredData = filterData(getSessionData('searchText'), strainData);
-        sortingBy = key;
-        saveSessionData('sortingBy', key);
+        const filteredData = filterData(searchQuery, strainData);
+        sortBy = key;
+        updateSessionStorage();
         if (filteredData) {
-            sortBy(filteredData, key, sortingOrder);
+            sortData(filteredData, key, sortingOrder);
             resultContainer.innerHTML = '';
             filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
             startObserving();
@@ -125,13 +122,13 @@ document.querySelectorAll('.sort-by').forEach(button => {
 
 // event listener to set sorting order
 document.querySelector('.sorting-order').addEventListener('click', () => {
-    const filteredData = filterData(getSessionData('searchText'), strainData);
+    const filteredData = filterData(searchQuery, strainData);
     if (sortingOrder === 'asc') {
         document.querySelector('.sorting-order').textContent = '↑ DESC';
         sortingOrder = 'desc';
-        saveSessionData('sortingOrder', 'desc');
+        updateSessionStorage();
         if (filteredData) {
-            sortBy(filteredData, sortingBy, sortingOrder);
+            sortData(filteredData, sortBy, sortingOrder);
             resultContainer.innerHTML = '';
             filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
             startObserving();
@@ -139,9 +136,9 @@ document.querySelector('.sorting-order').addEventListener('click', () => {
     } else if (sortingOrder === 'desc') {
         document.querySelector('.sorting-order').textContent = '↓ ASC';
         sortingOrder = 'asc';
-        saveSessionData('sortingOrder', 'asc');
+        updateSessionStorage();
         if (filteredData) {
-            sortBy(filteredData, sortingBy, sortingOrder);
+            sortData(filteredData, sortBy, sortingOrder);
             resultContainer.innerHTML = '';
             filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
             startObserving();
@@ -149,9 +146,11 @@ document.querySelector('.sorting-order').addEventListener('click', () => {
     }
 });
 
-// event listener to search
+// event listener for search
 searchInput.addEventListener('input', (event) => {
     debounce(() => {
+        const introductionText = document.querySelector('.introduction-text');
+        const noResultsText = document.querySelector('.no-results-text');
         let searchText = event.target.value.toLowerCase();
         introductionText.classList.remove('show');
         noResultsText.classList.remove('show');
@@ -162,14 +161,16 @@ searchInput.addEventListener('input', (event) => {
             resultContainer.innerHTML = '';
             introductionText.classList.add('show');
             noResultsText.classList.remove('show');
-            clearSessionData('searchText');
+            searchQuery = '';
+            updateSessionStorage();
             return;
         } else {
-            saveSessionData('searchText', searchText);
+            searchQuery = searchText;
+            updateSessionStorage();
         }
         let filteredData = filterData(searchText, strainData);
 
-        sortBy(filteredData, sortingBy, sortingOrder);
+        sortData(filteredData, sortBy, sortingOrder);
         console.log(filteredData)
 
         if (searchText !== '' && !filteredData || filteredData.length === 0) {
@@ -197,23 +198,15 @@ const debounce = (func, delay) => {
     };
 };
 
-// save session data
-const saveSessionData = (key, value) => {
-    sessionStorage.setItem(key, value);
-}
-
-// retrieve session data
-const getSessionData = (key) => {
-    return sessionStorage.getItem(key);
-}
-
-// delete session data
-const clearSessionData = (key) => {
-    sessionStorage.removeItem(key);
-}
+// update session storage
+const updateSessionStorage = () => {
+    sessionStorage.setItem('searchQuery', searchQuery);
+    sessionStorage.setItem('sortBy', sortBy);
+    sessionStorage.setItem('sortingOrder', sortingOrder);
+};
 
 // sort data
-const sortBy = (data, key, order) => {
+const sortData = (data, key, order) => {
     const multiplier = order === 'desc' ? -1 : 1;
 
     data.sort((a, b) => {
@@ -323,7 +316,7 @@ const startObserving = () => {
             }
         })
     }, {
-        rootMargin: '0px 0px 100px 0px'
+        rootMargin: '0px 0px 20% 0px'
     })
     const hiddenElements = resultContainer.querySelectorAll('.hidden');
     hiddenElements.forEach((el) => observer.observe(el))
@@ -331,7 +324,10 @@ const startObserving = () => {
 
 // start demo mode
 const startDemoMode = () => {
+    demoMode = true;
     const content = document.querySelector('.content');
+    const demoButton = document.querySelector('#start-demo-button');
+    demoButton.disabled = true;
     // Show the overlay after short delay
     setTimeout(() => {
         const overlay = document.getElementById('overlay');
@@ -364,10 +360,12 @@ const startDemoMode = () => {
                 debounce(() => {
                     searchInput.classList.remove('demo-mode');
                     searchInput.placeholder = 'Enter a cannabis strain you are curious about';
-                    const demoButton = document.getElementById('start-demo');
-                    demoButton.style.display = 'block';
-                    let filteredData = filterData(searchInput.value, strainData);
-                    sortBy(filteredData, 'name', 'asc')
+                    const introductionText = document.querySelector('.introduction-text');
+                    clearIcon.style.display = 'block';
+                    let filteredData = filterData(demoText, strainData);
+                    searchQuery = demoText;
+                    updateSessionStorage();
+                    sortData(filteredData, 'name', 'asc')
                     filteredData.forEach(strain => {
                         const card = createCard(strain);
                         resultContainer.appendChild(card);
@@ -375,7 +373,6 @@ const startDemoMode = () => {
                     content.classList.remove('blur');
                     introductionText.classList.remove('show');
                     startObserving();
-                    saveSessionData('searchText', demoText);
                 }, 750)();
             }
         };
@@ -386,8 +383,9 @@ const startDemoMode = () => {
 
     // Hide the overlay after a delay
     setTimeout(() => {
-        clearIcon.style.display = 'block';
         overlay.style.display = 'none';
+        demoButton.disabled = false;
+        demoMode = false;
     }, 6660);
 };
 
@@ -402,10 +400,4 @@ const updateScrollIndicator = () => {
 // on scroll update the scroll indicator
 window.onscroll = () => {
     updateScrollIndicator();
-};
-
-// clear search field
-const clearSearch = () => {
-    searchInput.value = '';
-    searchInput.focus();
 };
