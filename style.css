@@ -291,6 +291,9 @@ footer a {
     max-width: 1024px;
     padding: calc(60px + 1rem) 1rem;
 }
+.container.content-page a {
+    color: var(--beige);
+}
 footer {
     position: fixed;
 }
@@ -347,6 +350,9 @@ footer {
     }
     footer {
         gap: 8rem;
+    }
+    .header-back-link {
+        display: none;
     }
 }
 
