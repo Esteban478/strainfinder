@@ -199,15 +199,24 @@ input[type="text"]:not(:placeholder-shown)~.clear-icon {
     position: absolute;
     top: 30vh;
 }
-#start-demo-button {
+#search-suggestion {
+    color: var(--dark-link);
+    font-size: 1.1rem;
+}
+#show-all-button {
     width: fit-content;
     padding: 0.5rem 1rem;
-    margin: 0 auto;
+    margin: 0 auto 1rem;
     color: var(--green);
     cursor: pointer;
     border: 1px solid var(--green);
     border-radius: 5px;
     background-color: var(--beige);
+}
+#start-demo-link {
+    color: var(--beige);
+    cursor: pointer;
+    text-decoration: underline;
 }
 .result-container {
     display: grid;
@@ -231,11 +240,11 @@ a {
 .hidden {
     opacity: 0;
     filter: blur(5px);
-    transition: all 1s;
+    transition: all 0.4s;
     pointer-events: none;
 }
 .show {
-    animation-delay: 200ms;
+    animation-delay: 100ms;
     opacity: 1;
     filter: blur(0);
     pointer-events: visible;
@@ -363,9 +372,12 @@ footer {
     header #filter-button:hover {
         background-color: var(--link);
     }
-    #start-demo-button:hover {
+    #show-all-button:hover {
         background-color: var(--green);
         color: var(--beige);
         border: 1px solid var(--link);
+    }
+    #start-demo-link:hover {
+        color: var(--link);
     }
 }

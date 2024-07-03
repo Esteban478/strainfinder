@@ -1,4 +1,5 @@
 const searchInput = document.querySelector('#search');
+const suggestions = ["Sativa", "Indica", "Hybrid", "White Widdow", "Lemon Haze", "Haze", "Kush", "Blueberry", "Jack Herer", "Cheese Haze", "Silver Haze", "Amnesia Haze", "Diesel", "OG Kush", "Super Lemon Haze", "Northern Lights", "Cheese", "AK-47", "Skunk", "Blue Dream", "Maui Wowie", "Gelato", "Wedding Cake", "Critical", "Orange Bud", "Cali", "10%", "11%", "12%", "13%", "14%", "15%", "17%", "18%", "19%", "20%", "21%", "22%", "23%", "24%", "25%", "30%"];
 const demoText = 'blueberry';
 let resultContainer = document.querySelector('.result-container');
 let timeoutId;
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 startObserving();
                 toggleClearIcon();
             } else {
+                displayRandomSuggestion();
                 introductionText.classList.add('show');
             }
             document.querySelectorAll('.sort-by-input').forEach(button => {
@@ -53,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     clearIcon.addEventListener('click', () => {
         searchInput.value = '';
         resultContainer.innerHTML = '';
+        displayRandomSuggestion();
         introductionText.classList.add('show');
         noResultsText.classList.remove('show');
         clearIcon.style.display = 'none';
@@ -83,6 +86,15 @@ document.addEventListener('DOMContentLoaded', () => {
     checkScrollPosition();
 });
 
+// event listener to show all strains
+document.querySelector('#show-all-button').addEventListener('click', () => {
+    document.querySelector('.introduction-text').classList.remove('show');
+    resultContainer.innerHTML = '';
+    sortData(strainData, sortBy, sortingOrder);
+    strainData.forEach(strain => resultContainer.appendChild(createCard(strain)));
+    startObserving();
+});
+
 // event listener to open filter section
 document.querySelector('#filter-button').addEventListener('click', () => {
     const filterButtonIcon = document.querySelector('.filter-button-icon');
@@ -102,7 +114,7 @@ document.querySelector('#filter-button').addEventListener('click', () => {
 });
 
 // event listener to start demo
-document.querySelector('#start-demo-button').addEventListener('click', () => !demoMode ? startDemoMode() : null);
+document.querySelector('#start-demo-link').addEventListener('click', () => !demoMode ? startDemoMode() : null);
 
 // event listener to set sorting
 document.querySelectorAll('.sort-by').forEach(button => {
@@ -322,11 +334,18 @@ const startObserving = () => {
     hiddenElements.forEach((el) => observer.observe(el))
 }
 
+// display a random search suggestion
+const displayRandomSuggestion = () => {
+    const suggestionsSpan = document.querySelector('#search-suggestion');
+    const suggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+    suggestionsSpan.textContent = suggestion;
+}
+
 // start demo mode
 const startDemoMode = () => {
     demoMode = true;
     const content = document.querySelector('.content');
-    const demoButton = document.querySelector('#start-demo-button');
+    const demoButton = document.querySelector('#start-demo-link');
     demoButton.disabled = true;
     // Show the overlay after short delay
     setTimeout(() => {
