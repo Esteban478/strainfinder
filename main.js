@@ -386,6 +386,7 @@ const startDemoMode = () => {
 
     // Hide the overlay after a delay
     setTimeout(() => {
+        clearIcon.style.display = 'block';
         overlay.style.display = 'none';
     }, 6660);
 };
