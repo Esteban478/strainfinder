@@ -88,13 +88,11 @@ const toggleClearIcon = () => {
 // event listener to show results for suggestion
 document.querySelector('#show-results-button').addEventListener('click', () => {
     let suggest = suggestions[Math.floor(Math.random() * suggestions.length)];
-    console.log(suggest)
     document.querySelector('.introduction-text').classList.remove('show');
     searchInput.value = suggest;
     searchQuery = suggest;
     updateSessionStorage();
     let filteredData = filterData(searchQuery, strainData);
-    console.log(filteredData)
     sortData(filteredData, sortBy, sortingOrder);
     filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
     toggleClearIcon();
@@ -339,13 +337,6 @@ const startObserving = () => {
     const hiddenElements = resultContainer.querySelectorAll('.hidden');
     hiddenElements.forEach((el) => observer.observe(el))
 }
-
-// display a random search suggestion
-// const displayRandomSuggestion = () => {
-//     const suggestionsSpan = document.querySelector('#search-suggestion');
-//     const suggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-//     suggestionsSpan.textContent = suggestion;
-// }
 
 // start demo mode
 const startDemoMode = () => {

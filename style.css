@@ -199,8 +199,7 @@ input[type="text"]:not(:placeholder-shown)~.clear-icon {
     position: absolute;
     top: 30vh;
 }
-#search-suggestion {
-    color: var(--dark-link);
+.introduction-text p:not(#start-demo-link) {
     font-size: 1.1rem;
 }
 #show-results-button {
@@ -212,6 +211,7 @@ input[type="text"]:not(:placeholder-shown)~.clear-icon {
     border: 1px solid var(--green);
     border-radius: 5px;
     background-color: var(--beige);
+    font-size: 1.25rem;
 }
 #start-demo-link {
     color: var(--beige);

@@ -1,9 +1,9 @@
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const strainName = urlParams.get('name');
-const noInfoText = 'No information available for this strain.'
 document.title = strainName;
 
+// fetch single strain data
 const fetchStrainData = () => {
     fetch('https://strainsapi.netlify.app/strains.json')
         .then(response => response.json())
@@ -35,6 +35,8 @@ const createHtmlElements = (strain) => {
     const strainEffectsPositivesList = document.querySelector('#strain-positives-list');
     const strainEffectsNegativesList = document.querySelector('#strain-negatives-list');
     const strainEffectsHelpsWithList = document.querySelector('#strain-helps-with-list');
+    const noEffectsText = 'No information available for this strain.';
+    const noDescriptionText = "This strain's details are yet to be discovered.";
     const strainShoppingLink = document.querySelector('.strain-shopping-link');
     const strainShoppingLinkDE = document.querySelector('.strain-shopping-link.de');
 
@@ -44,7 +46,8 @@ const createHtmlElements = (strain) => {
     strainTypeElement.textContent = `Type: ${type ? type : 'N/A'}`;
     strainThcElement.textContent = `THC: ${thc_level ? thc_level : 'N/A'}`;
     strainCommonTerpeneElement.textContent = `Main terpene: ${most_common_terpene ? most_common_terpene : 'N/A'}`;
-    strainDescriptionElement.textContent = description;
+    const descriptionText = description ? description : noDescriptionText;
+    strainDescriptionElement.textContent = descriptionText;
     strainShoppingLink.href = `https://seedsupreme.com/catalogsearch/result/?q=${name}`;
     strainShoppingLink.textContent = `Shop ${name} at Seedsupreme`;
     strainShoppingLinkDE.href = `https://www.hanfsamenladen.com/search/${name};`
@@ -61,9 +64,9 @@ const createHtmlElements = (strain) => {
         }
     };
 
-    displayEffects(positives, strainEffectsPositivesList, noInfoText);
-    displayEffects(negatives, strainEffectsNegativesList, noInfoText);
-    displayEffects(helps_with, strainEffectsHelpsWithList, noInfoText);
+    displayEffects(positives, strainEffectsPositivesList, noEffectsText);
+    displayEffects(negatives, strainEffectsNegativesList, noEffectsText);
+    displayEffects(helps_with, strainEffectsHelpsWithList, noEffectsText);
 }
 
 const createEffectsListItem = (effect) => {
