@@ -1,6 +1,6 @@
 const searchInput = document.querySelector('#search');
-const suggestions = ["Sativa", "Indica", "Hybrid", "White Widdow", "Lemon Haze", "Haze", "Kush", "Blueberry", "Jack Herer", "Cheese Haze", "Silver Haze", "Amnesia Haze", "Diesel", "OG Kush", "Super Lemon Haze", "Northern Lights", "Cheese", "AK-47", "Skunk", "Blue Dream", "Maui Wowie", "Gelato", "Wedding Cake", "Critical", "Orange Bud", "Cali", "10%", "11%", "12%", "13%", "14%", "15%", "17%", "18%", "19%", "20%", "21%", "22%", "23%", "24%", "25%", "30%"];
-const demoText = 'blueberry';
+const suggestions = ["Sativa", "Indica", "Hybrid", "Afghani", "Lowryder", "Bubblegum", "Acapulco Gold", "Hindu Kush", "Durban Poison", "Panama", "White Widdow", "Lemon Haze", "Haze", "Purple Haze", "Kush", "Blueberry", "Jack Herer", "Cheese", "Silver Haze", "Amnesia Haze", "Sour Diesel", "OG Kush", "Super Lemon Haze", "Northern Lights", "Cheese", "AK-47", "Skunk", "Blue Dream", "Maui Wowie", "Gelato", "Wedding Cake", "Critical", "Orange Bud", "Cali", "10%", "11%", "12%", "13%", "14%", "15%", "17%", "18%", "19%", "20%", "21%", "22%", "23%", "24%", "25%", "30%"];
+const demoText = 'Blueberry';
 let resultContainer = document.querySelector('.result-container');
 let timeoutId;
 let demoMode;
@@ -41,15 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => console.error('Error fetching data:', error));
 
-    // clear icon in search input
-    const toggleClearIcon = () => {
-        if (searchInput.value.trim() !== '') {
-            clearIcon.style.display = 'block';
-        } else {
-            clearIcon.style.display = 'none';
-        }
-    };
-
     searchInput.addEventListener('input', toggleClearIcon);
 
     clearIcon.addEventListener('click', () => {
@@ -62,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchQuery = '';
         updateSessionStorage();
         toggleClearIcon();
+        document.querySelector(".scroll-indicator-bar").style.width = "0%";
     });
 
     // scroll to top
@@ -86,12 +78,28 @@ document.addEventListener('DOMContentLoaded', () => {
     checkScrollPosition();
 });
 
-// event listener to show all strains
-document.querySelector('#show-all-button').addEventListener('click', () => {
+// clear icon in search input
+const toggleClearIcon = () => {
+    if (searchInput.value.trim() !== '') {
+        clearIcon.style.display = 'block';
+    } else {
+        clearIcon.style.display = 'none';
+    }
+};
+
+// event listener to show results for suggestion
+document.querySelector('#show-results-button').addEventListener('click', () => {
+    let suggest = document.querySelector('#search-suggestion').innerText;
+    console.log(suggest)
     document.querySelector('.introduction-text').classList.remove('show');
-    resultContainer.innerHTML = '';
-    sortData(strainData, sortBy, sortingOrder);
-    strainData.forEach(strain => resultContainer.appendChild(createCard(strain)));
+    searchInput.value = suggest;
+    searchQuery = suggest;
+    updateSessionStorage();
+    let filteredData = filterData(searchQuery, strainData);
+    console.log(filteredData)
+    sortData(filteredData, sortBy, sortingOrder);
+    filteredData.forEach(strain => resultContainer.appendChild(createCard(strain)));
+    toggleClearIcon();
     startObserving();
 });
 
@@ -163,7 +171,7 @@ searchInput.addEventListener('input', (event) => {
     debounce(() => {
         const introductionText = document.querySelector('.introduction-text');
         const noResultsText = document.querySelector('.no-results-text');
-        let searchText = event.target.value.toLowerCase();
+        let searchText = event.target.value;
         introductionText.classList.remove('show');
         noResultsText.classList.remove('show');
         resultContainer.innerHTML = '';
@@ -257,9 +265,9 @@ const sortData = (data, key, order) => {
 const filterData = (searchText, strainData) => {
     if (!searchText) return null;
     return strainData.filter(strain => {
-        return (strain.name && typeof strain.name === 'string' && strain.name.toLowerCase().includes(searchText)) ||
-            (strain.thc_level && typeof strain.thc_level === 'string' && strain.thc_level.toLowerCase().includes(searchText)) ||
-            (strain.type && typeof strain.type === 'string' && strain.type.toLowerCase().includes(searchText));
+        return (strain.name && typeof strain.name === 'string' && strain.name.toLowerCase().includes(searchText.toLowerCase())) ||
+            (strain.thc_level && typeof strain.thc_level === 'string' && strain.thc_level.toLowerCase().includes(searchText.toLowerCase())) ||
+            (strain.type && typeof strain.type === 'string' && strain.type.toLowerCase().includes(searchText.toLowerCase()));
     });
 }
 

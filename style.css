@@ -203,7 +203,7 @@ input[type="text"]:not(:placeholder-shown)~.clear-icon {
     color: var(--dark-link);
     font-size: 1.1rem;
 }
-#show-all-button {
+#show-results-button {
     width: fit-content;
     padding: 0.5rem 1rem;
     margin: 0 auto 1rem;
@@ -372,7 +372,7 @@ footer {
     header #filter-button:hover {
         background-color: var(--link);
     }
-    #show-all-button:hover {
+    #show-results-button:hover {
         background-color: var(--green);
         color: var(--beige);
         border: 1px solid var(--link);
