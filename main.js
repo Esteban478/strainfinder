@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 startObserving();
                 toggleClearIcon();
             } else {
-                displayRandomSuggestion();
                 introductionText.classList.add('show');
             }
             document.querySelectorAll('.sort-by-input').forEach(button => {
@@ -46,7 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
     clearIcon.addEventListener('click', () => {
         searchInput.value = '';
         resultContainer.innerHTML = '';
-        displayRandomSuggestion();
         introductionText.classList.add('show');
         noResultsText.classList.remove('show');
         clearIcon.style.display = 'none';
@@ -89,7 +87,7 @@ const toggleClearIcon = () => {
 
 // event listener to show results for suggestion
 document.querySelector('#show-results-button').addEventListener('click', () => {
-    let suggest = document.querySelector('#search-suggestion').innerText;
+    let suggest = suggestions[Math.floor(Math.random() * suggestions.length)];
     console.log(suggest)
     document.querySelector('.introduction-text').classList.remove('show');
     searchInput.value = suggest;
@@ -343,11 +341,11 @@ const startObserving = () => {
 }
 
 // display a random search suggestion
-const displayRandomSuggestion = () => {
-    const suggestionsSpan = document.querySelector('#search-suggestion');
-    const suggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
-    suggestionsSpan.textContent = suggestion;
-}
+// const displayRandomSuggestion = () => {
+//     const suggestionsSpan = document.querySelector('#search-suggestion');
+//     const suggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+//     suggestionsSpan.textContent = suggestion;
+// }
 
 // start demo mode
 const startDemoMode = () => {
