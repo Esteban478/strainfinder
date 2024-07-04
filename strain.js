@@ -50,7 +50,7 @@ const createHtmlElements = (strain) => {
     strainDescriptionElement.textContent = descriptionText;
     strainShoppingLink.href = `https://seedsupreme.com/catalogsearch/result/?q=${name}`;
     strainShoppingLink.textContent = `Shop ${name} at Seedsupreme`;
-    strainShoppingLinkDE.href = `https://www.hanfsamenladen.com/search/${name};`
+    strainShoppingLinkDE.href = `https://www.hanfsamenladen.com/search/${name}`;
     strainShoppingLinkDE.textContent = `Kaufe ${name} im Hanfsamenladen`;
 
     //  display effects if objects not empty, otherwise display a message

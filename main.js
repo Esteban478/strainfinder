@@ -203,7 +203,6 @@ searchInput.addEventListener('input', (event) => {
         let filteredData = filterData(searchText, strainData);
 
         sortData(filteredData, sortBy, sortingOrder);
-        console.log(filteredData)
 
         if (searchText !== '' && !filteredData || filteredData.length === 0) {
             resultContainer.innerHTML = '';
