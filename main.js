@@ -85,6 +85,22 @@ const toggleClearIcon = () => {
     }
 };
 
+// add event listener to clear results when user clicks on header-logo
+document.querySelector('.header-back-link').addEventListener('click', (event) => {
+    const introductionText = document.querySelector('.introduction-text');
+    const noResultsText = document.querySelector('.no-results-text');
+    event.preventDefault();
+    console.log("clicked logo");
+    searchInput.value = '';
+    searchQuery = '';
+    updateSessionStorage();
+    resultContainer.innerHTML = '';
+    introductionText.classList.add('show');
+    noResultsText.classList.remove('show');
+    toggleClearIcon();
+    document.querySelector(".scroll-indicator-bar").style.width = "0%";
+});
+
 // event listener to show results for suggestion
 document.querySelector('#show-results-button').addEventListener('click', () => {
     let suggest = suggestions[Math.floor(Math.random() * suggestions.length)];
